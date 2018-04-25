@@ -2,7 +2,7 @@
   "name": "dropping-spray",
   "version": "1.0.0",
   "description": "A spray that creates drops when used on the same spot for too long",
-  "main": "index.js",
+  "files": ["src/spray.js", "src/draw-shapes.js"],
   "scripts": {
     "test": "karma start"
   },
