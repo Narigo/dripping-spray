@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Dropping spray</title>
+  <style type="text/css">
+    html, body {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    #main {
+      position: absolute;
+      width: 250px;
+      top: 0;
+      right: 0;
+      margin: 20px;
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    #options-hider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    #options-content {
+      display: none;
+    }
+
+    #options-content div {
+      margin-top: 10px;
+    }
+
+    #options-content input {
+      width: 35px;
+    }
+
+    #options-content input[type=range] {
+      width: 90%;
+    }
+
+    #options-content label {
+      cursor: pointer;
+      display: block;
+    }
+
+    #spray1 {
+      height: 100%;
+    }
+
+    canvas {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+<div id="main">
+  <div id="options-hider">Open options</div>
+  <div id="options-content">
+    <header>
+      <h1>Dropping spray</h1>
+    </header>
+    <form id="options">
+      <div>
+        <h2>Colors</h2>
+
+        <div><label><input type="range" name="red" min="0" max="255" value="255"/> R</label></div>
+        <div><label><input type="range" name="green" min="0" max="255"/> G</label></div>
+        <div><label><input type="range" name="blue" min="0" max="255"/> B</label></div>
+      </div>
+
+      <div>
+        <h2>Spray look</h2>
+
+        <div><label><input type="number" name="size" value="5"/> Minimum size [default=5]</label></div>
+        <div><label><input type="number" name="splatterAmount" value="40"/> Splatter amount [default=40]</label></div>
+        <div><label><input type="number" name="splatterRadius" value="50"/> Splatter radius [default=50]</label></div>
+      </div>
+
+      <div>
+        <h2>Drops</h2>
+
+        <div><label><input type="checkbox" name="drops" value="1" checked="checked"/> Dropping? [default=yes]</label>
+        </div>
+        <div><label><input type="number" name="dropThreshold" value="50"/> Drop threshold [default=50]</label></div>
+        <div><label><input type="number" name="dropSpeed" value="3"/> Drop speed [default=3]</label></div>
+        <div><label><input type="number" name="autoSpraySpeed" value="1"/> Autospray speed [default=1]</label></div>
+      </div>
+
+      <div>
+        <button id="clearCanvas" type="button">Clear canvas</button>
+      </div>
+      <div>
+        <button id="randomColor" type="button">Randomize color (resets spray)!</button>
+      </div>
+      <div>
+        <button id="autoSpray" type="button">Auto spray!</button>
+        <button id="autoSprayStop" type="button">Stop auto-sprays</button>
+      </div>
+    </form>
+  </div>
+</div>
+<canvas id="spray1"></canvas>
+<script src="bundle.js"></script>
+</body>
+</html>

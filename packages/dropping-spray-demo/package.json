@@ -1,0 +1,18 @@
+{
+  "name": "dropping-spray-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "demo.js",
+  "scripts": {
+    "build": "browserify src/demo.js -o docs/bundle.js"
+  },
+  "keywords": [],
+  "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.2.0"
+  },
+  "dependencies": {
+    "dropping-spray-pixijs": "^1.0.0"
+  }
+}

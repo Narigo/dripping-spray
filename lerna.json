@@ -1,7 +1,9 @@
 {
   "lerna": "2.10.2",
   "packages": [
-    "packages/*"
+    "packages/dropping-spray",
+    "packages/dropping-spray-canvas",
+    "packages/dropping-spray-pixijs"
   ],
   "version": "0.0.0"
 }

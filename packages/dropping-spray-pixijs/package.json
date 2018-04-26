@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "karma start"
+    "format": "prettier --write **/*.js",
+    "test": "karma start karma.conf.js"
   },
   "keywords": [],
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",
