@@ -4,7 +4,8 @@
   "description": "",
   "main": "demo.js",
   "scripts": {
-    "build": "browserify src/demo.js -o docs/bundle.js"
+    "build": "browserify src/demo.js -o docs/bundle.js",
+    "format": "prettier --write '**/*.js'"
   },
   "keywords": [],
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",

@@ -1,9 +1,9 @@
 function CanvasDrawer(canvas) {
-  var ctx = canvas.getContext('2d');
+  var ctx = canvas.getContext("2d");
 
   return {
-    drawShapes : drawShapes,
-    clear : clearCanvas
+    drawShapes: drawShapes,
+    clear: clearCanvas
   };
 
   function clearCanvas() {
@@ -17,18 +17,22 @@ function CanvasDrawer(canvas) {
     var colorString, i, shape, shapes;
     if (!shapesToRender.isEmpty()) {
       shapes = shapesToRender.shapes;
-      colorString = getRgbString(shapesToRender.color.r, shapesToRender.color.g, shapesToRender.color.b);
+      colorString = getRgbString(
+        shapesToRender.color.r,
+        shapesToRender.color.g,
+        shapesToRender.color.b
+      );
       ctx.fillStyle = colorString;
-      if (shapesToRender.shape === 'line') {
+      if (shapesToRender.shape === "line") {
         for (i = shapes.length - 1; i >= 0; i--) {
           shape = shapes[i];
           ctx.strokeStyle = colorString;
-          ctx.lineCap = 'round';
+          ctx.lineCap = "round";
           ctx.lineWidth = shape.size;
           linePath(shape.x0, shape.y0, shape.x1, shape.y1);
         }
         ctx.stroke();
-      } else if (shapesToRender.shape === 'circle') {
+      } else if (shapesToRender.shape === "circle") {
         for (i = shapes.length - 1; i >= 0; i--) {
           shape = shapes[i];
           ctx.beginPath();
@@ -50,13 +54,13 @@ function CanvasDrawer(canvas) {
 }
 
 function getRgbString(red, green, blue) {
-  var rgb = 'rgb(';
+  var rgb = "rgb(";
   rgb += red;
-  rgb += ',';
+  rgb += ",";
   rgb += green;
-  rgb += ',';
+  rgb += ",";
   rgb += blue;
-  rgb += ')';
+  rgb += ")";
   return rgb;
 }
 

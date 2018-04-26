@@ -1,29 +1,29 @@
-var DrawShapes = require('./draw-shapes.js');
+var DrawShapes = require("./draw-shapes.js");
 var defaultOptions = {
-  color : {
-    r : 0,
-    g : 0,
-    b : 255
+  color: {
+    r: 0,
+    g: 0,
+    b: 255
   },
-  size : 5,
+  size: 5,
 
-  splatterAmount : 10,
-  splatterRadius : 20,
+  splatterAmount: 10,
+  splatterRadius: 20,
 
-  dropper : true,
-  dropThreshold : 50,
-  dropSpeed : 3
+  dropper: true,
+  dropThreshold: 50,
+  dropSpeed: 3
 };
 
 function Spray(options) {
   var opts = options || defaultOptions;
-  var color = getOpt('color');
-  var size = getOpt('size');
-  var splatterAmount = getOpt('splatterAmount');
-  var splatterRadius = getOpt('splatterRadius');
-  var dropper = getOpt('dropper');
-  var dropThreshold = getOpt('dropThreshold');
-  var dropSpeed = getOpt('dropSpeed');
+  var color = getOpt("color");
+  var size = getOpt("size");
+  var splatterAmount = getOpt("splatterAmount");
+  var splatterRadius = getOpt("splatterRadius");
+  var dropper = getOpt("dropper");
+  var dropThreshold = getOpt("dropThreshold");
+  var dropSpeed = getOpt("dropSpeed");
   var canvas = opts.canvas;
   var dropFns = [];
   var drops = [];
@@ -31,14 +31,14 @@ function Spray(options) {
   initializeDropCounter();
 
   return {
-    draw : draw,
-    resetDrops : initializeDropCounter,
-    stopDrops : stopCurrentDrops
+    draw: draw,
+    resetDrops: initializeDropCounter,
+    stopDrops: stopCurrentDrops
   };
 
   function getOpt(name) {
     var opt = opts[name];
-    if (typeof opt !== 'undefined') {
+    if (typeof opt !== "undefined") {
       return opt;
     } else {
       return defaultOptions[name];
@@ -63,7 +63,7 @@ function Spray(options) {
       drawer.drawShapes(sprayedCircles);
     }
 
-    if (dropLines && !dropLines.isEmpty() || amount > 0) {
+    if ((dropLines && !dropLines.isEmpty()) || amount > 0) {
       isDropping = true;
       drawer.drawShapes(dropLines);
     }
@@ -82,8 +82,8 @@ function Spray(options) {
     }
 
     return {
-      amount : amount,
-      lines : dropLines
+      amount: amount,
+      lines: dropLines
     };
   }
 
@@ -96,10 +96,10 @@ function Spray(options) {
       drops[x] = [];
       for (var y = 0; y < canvas.height / size; y++) {
         drops[x][y] = {
-          count : 0,
-          drops : false,
-          width : 0,
-          dropSpeed : dropSpeed
+          count: 0,
+          drops: false,
+          width: 0,
+          dropSpeed: dropSpeed
         };
       }
     }
@@ -116,7 +116,7 @@ function Spray(options) {
   }
 
   function createDropFnFor(maxY, x, y, myDrop) {
-    return function (idx, shapesArray) {
+    return function(idx, shapesArray) {
       var deltaWidth, deltaX, nextY, otherDrop;
 
       if (myDrop.count <= 0) {
@@ -137,8 +137,19 @@ function Spray(options) {
             myDrop.count = myDrop.count - myDrop.width;
           }
           otherDrop.count += myDrop.count;
-          otherDrop.width = Math.max(Math.max(1, myDrop.width + deltaWidth), otherDrop.width);
-          shapesArray.push(DrawShapes.line(x * size, y * size, (x * size) + deltaX, nextY * size, myDrop.width));
+          otherDrop.width = Math.max(
+            Math.max(1, myDrop.width + deltaWidth),
+            otherDrop.width
+          );
+          shapesArray.push(
+            DrawShapes.line(
+              x * size,
+              y * size,
+              x * size + deltaX,
+              nextY * size,
+              myDrop.width
+            )
+          );
 
           myDrop.count = 0;
           myDrop = otherDrop;
@@ -177,11 +188,10 @@ function Spray(options) {
       r = Math.random();
       dx = r * Math.cos(t) * splatterRadius;
       dy = r * Math.sin(t) * splatterRadius;
-      s = 1 - (Math.sqrt(dx * dx + dy * dy) / splatterRadius);
+      s = 1 - Math.sqrt(dx * dx + dy * dy) / splatterRadius;
       filledCircle(circleShapes, x + dx, y + dy, size * s);
     }
   }
 }
-
 
 module.exports = Spray;

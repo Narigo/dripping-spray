@@ -4,8 +4,8 @@
   "description": "A spray that creates drops when used on the same spot for too long",
   "files": ["src/spray.js", "src/draw-shapes.js"],
   "scripts": {
-    "format": "prettier --write",
-    "test": "karma start karma.conf.js"
+    "format": "prettier --write '**/*.js'",
+    "test": "karma start"
   },
   "keywords": [],
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",

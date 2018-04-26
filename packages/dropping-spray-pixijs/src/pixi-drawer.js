@@ -1,4 +1,4 @@
-var PIXI = require('pixi.js');
+var PIXI = require("pixi.js");
 
 function PixiDrawer(canvas) {
   var resolution = (function() {
@@ -15,7 +15,10 @@ function PixiDrawer(canvas) {
   canvas.width = maxWidth;
   canvas.height = maxHeight;
 
-  var renderer = PIXI.autoDetectRenderer(maxWidth, maxHeight, { view: canvas, antialias: true });
+  var renderer = PIXI.autoDetectRenderer(maxWidth, maxHeight, {
+    view: canvas,
+    antialias: true
+  });
 
   var stage = new PIXI.Container();
 
@@ -41,7 +44,10 @@ function PixiDrawer(canvas) {
 
     if (!shapesToRender.isEmpty()) {
       shapes = shapesToRender.shapes;
-      color = shapesToRender.color.r * 255 * 255 + shapesToRender.color.g * 255 + shapesToRender.color.b;
+      color =
+        shapesToRender.color.r * 255 * 255 +
+        shapesToRender.color.g * 255 +
+        shapesToRender.color.b;
       if (shapesToRender.shape === "line") {
         for (i = shapes.length - 1; i >= 0; i--) {
           shape = shapes[i];
