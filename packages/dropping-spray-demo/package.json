@@ -11,7 +11,8 @@
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^16.2.0"
+    "browserify": "^16.2.0",
+    "prettier": "^1.12.1"
   },
   "dependencies": {
     "dropping-spray-pixijs": "^1.0.0"

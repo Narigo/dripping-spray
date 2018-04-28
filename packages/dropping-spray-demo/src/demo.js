@@ -1,8 +1,8 @@
-var Spray = require('dropping-spray/src/spray.js');
+var Spray = require("dropping-spray/src/spray.js");
 // var Drawer = require('dropping-spray-canvas/src/canvas-drawer.js');
-var Drawer = require('dropping-spray-pixijs/src/pixi-drawer.js');
+var Drawer = require("dropping-spray-pixijs/src/pixi-drawer.js");
 
-var canvas = document.getElementById('spray1');
+var canvas = document.getElementById("spray1");
 var drawer = new Drawer(canvas);
 
 var spray;
@@ -10,12 +10,12 @@ var spraying = false;
 var autoSprays = [];
 
 var sprayCoords = {
-  x : 0,
-  y : 0
+  x: 0,
+  y: 0
 };
 var requestingAnimationFrame = false;
 
-var startEventCanvas = downEvent(canvas, function () {
+var startEventCanvas = downEvent(canvas, function() {
   spraying = true;
   if (!requestingAnimationFrame) {
     render();
@@ -23,15 +23,23 @@ var startEventCanvas = downEvent(canvas, function () {
 });
 var moveEventCanvas = downEvent(canvas);
 
-var options = require('./options.js')('options', canvas, drawer, createSpray, resetSpray, autoSprays, triggerRender);
+var options = require("./options.js")(
+  "options",
+  canvas,
+  drawer,
+  createSpray,
+  resetSpray,
+  autoSprays,
+  triggerRender
+);
 
-window.addEventListener('resize', resize);
+window.addEventListener("resize", resize);
 resize();
 
-canvas.addEventListener('pointerdown', startEventCanvas);
-canvas.addEventListener('pointermove', moveEventCanvas);
+canvas.addEventListener("pointerdown", startEventCanvas);
+canvas.addEventListener("pointermove", moveEventCanvas);
 
-document.addEventListener('pointerup', stopSpraying);
+document.addEventListener("pointerup", stopSpraying);
 
 options.setupOptions();
 options.setupForm();
@@ -81,7 +89,7 @@ function render() {
 }
 
 function downEvent(canvas, cb) {
-  return function (event) {
+  return function(event) {
     event.preventDefault();
     event.stopPropagation();
     var touchList = event.touches;
@@ -100,6 +108,6 @@ function downEvent(canvas, cb) {
 }
 
 function resize() {
-  canvas.height = document.getElementById('spray1').offsetHeight;
+  canvas.height = document.getElementById("spray1").offsetHeight;
   canvas.width = window.innerWidth;
 }
