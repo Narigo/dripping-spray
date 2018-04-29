@@ -10,10 +10,12 @@
   "keywords": [],
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",
   "license": "MIT",
+  "dependencies": {
+    "dropping-spray": "^1.0.0"
+  },
   "devDependencies": {
     "browserify": "^16.2.0",
     "chai": "^4.1.2",
-    "dropping-spray": "^1.0.0",
     "jasmine": "^3.1.0",
     "jasmine-core": "^3.1.0",
     "karma": "^2.0.2",
