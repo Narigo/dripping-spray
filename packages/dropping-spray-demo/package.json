@@ -2,9 +2,9 @@
   "name": "dropping-spray-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "demo.js",
+  "main": "src/demo.js",
   "scripts": {
-    "build": "browserify src/demo.js -o docs/bundle.js",
+    "build": "browserify src/demo.js -x dropping-spray -x dropping-spray-pixijs -o docs/bundle.js",
     "format": "prettier --write '**/*.js'"
   },
   "keywords": [],

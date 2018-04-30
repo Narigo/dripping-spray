@@ -1,6 +1,6 @@
-var Spray = require("dropping-spray/src/spray.js");
+var Spray = require("dropping-spray").Spray;
 // var Drawer = require('dropping-spray-canvas/src/canvas-drawer.js');
-var Drawer = require("dropping-spray-pixijs/src/pixi-drawer.js");
+var Drawer = require("dropping-spray-pixijs").Drawer;
 
 var canvas = document.getElementById("spray1");
 var drawer = new Drawer(canvas);

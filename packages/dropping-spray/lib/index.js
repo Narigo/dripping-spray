@@ -1,3 +1,67 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+function Circles(red, green, blue) {
+  var that = this;
+  this.shape = "circle";
+  this.color = {
+    r: red,
+    g: green,
+    b: blue
+  };
+  this.shapes = [];
+  this.isEmpty = function() {
+    return that.shapes.length === 0;
+  };
+}
+
+function Lines(red, green, blue) {
+  var that = this;
+  this.shape = "line";
+  this.color = {
+    r: red,
+    g: green,
+    b: blue
+  };
+  this.shapes = [];
+  this.isEmpty = function() {
+    return that.shapes.length === 0;
+  };
+}
+
+function circle(x, y, radius) {
+  return {
+    x: x,
+    y: y,
+    radius: radius
+  };
+}
+
+function line(x0, y0, x1, y1, size) {
+  return {
+    size: size,
+    x0: x0,
+    y0: y0,
+    x1: x1,
+    y1: y1
+  };
+}
+
+module.exports = {
+  circle: circle,
+  line: line,
+  Circles: Circles,
+  Lines: Lines
+};
+
+},{}],2:[function(require,module,exports){
+var shapes = require("./draw-shapes");
+var Spray = require("./spray");
+
+module.exports = {
+  shapes: shapes,
+  Spray: Spray
+};
+
+},{"./draw-shapes":1,"./spray":3}],3:[function(require,module,exports){
 var DrawShapes = require("./draw-shapes");
 var defaultOptions = {
   color: {
@@ -195,3 +259,5 @@ function Spray(options) {
 }
 
 module.exports = Spray;
+
+},{"./draw-shapes":1}]},{},[2]);

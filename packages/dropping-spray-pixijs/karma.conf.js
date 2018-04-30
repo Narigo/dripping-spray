@@ -46,6 +46,15 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true
+    singleRun: true,
+
+    browserify: {
+      configure: function(bundle) {
+        bundle.on("prebundle", function() {
+          bundle.require("dropping-spray");
+          bundle.external("dropping-spray");
+        });
+      }
+    }
   });
 };
