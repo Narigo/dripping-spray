@@ -4,7 +4,7 @@
   "description": "A spray that creates drops when used on the same spot for too long",
   "main": "lib/index.js",
   "scripts": {
-    "build": "browserify src/index.js -o lib/index.js",
+    "build": "rollup -c rollup.config.js",
     "clean": "rm -rf ./lib",
     "format": "prettier --write '**/*.js'",
     "test": "karma start"
@@ -21,7 +21,11 @@
     "karma-browserify": "^5.2.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.1",
+    "karma-rollup-preprocessor": "^6.0.0",
     "prettier": "^1.12.1",
+    "rollup": "^0.58.2",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
     "sinon": "^4.5.0",
     "watchify": "^3.11.0"
   }
