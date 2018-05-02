@@ -1,7 +1,8 @@
 {
   "name": "dropping-spray-demo",
-  "version": "1.0.0",
+  "version": "1.0.0-0",
   "description": "",
+  "private": true,
   "main": "src/demo.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
@@ -19,7 +20,7 @@
     "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
-    "dropping-spray": "^1.0.0",
-    "dropping-spray-pixijs": "^1.0.0"
+    "dropping-spray": "^1.0.0-0",
+    "dropping-spray-pixijs": "^1.0.0-0"
   }
 }

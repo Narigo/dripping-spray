@@ -1,7 +1,7 @@
 {
   "name": "dropping-spray-canvas",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.0-0",
+  "description": "Draws shapes of dropping spray on a canvas",
   "main": "lib/index.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
@@ -13,7 +13,7 @@
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",
   "license": "MIT",
   "dependencies": {
-    "dropping-spray": "^1.0.0"
+    "dropping-spray": "^1.0.0-0"
   },
   "devDependencies": {
     "browserify": "^16.2.0",
