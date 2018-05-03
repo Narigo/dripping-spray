@@ -1,4 +1,6 @@
 # Dropping Spray
 
-This module creates shapes that will look like a real spray can which produces drops if you draw at the same coordinates.
+This module creates shapes that can be drawn to look like a real spray can. It produces drops if drawing on the same
+spot for some time.
 
+See the full readme in the [code repository](https://github.com/Narigo/dropping-spray).
