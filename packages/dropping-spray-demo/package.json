@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "dropping-spray": "^1.0.0-0",
-    "dropping-spray-pixijs": "^1.0.0-0"
+    "dropping-spray-canvas": "^1.0.0-0"
   }
 }

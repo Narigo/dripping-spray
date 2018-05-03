@@ -1,5 +1,5 @@
 var Spray = require("dropping-spray").Spray;
-var Drawer = require("./canvas-drawer");
+var Drawer = require("./canvas-drawer").Drawer;
 
 function createCanvasSpray(canvasId, options) {
   var canvas = document.getElementById(canvasId);

@@ -1,5 +1,5 @@
 describe("The pixi painter", function() {
-  var PixiDrawer = require("./pixi-drawer.js");
+  var PixiDrawer = require("./pixi-drawer.js").Drawer;
   var Shapes = require("dropping-spray").shapes;
   var canvas = document.createElement("canvas");
   canvas.width = 100;

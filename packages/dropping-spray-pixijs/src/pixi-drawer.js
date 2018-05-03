@@ -78,4 +78,6 @@ function PixiDrawer(canvas) {
   }
 }
 
-module.exports = PixiDrawer;
+module.exports = {
+  Drawer: PixiDrawer
+};

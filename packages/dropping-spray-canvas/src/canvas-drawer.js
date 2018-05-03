@@ -64,4 +64,6 @@ function getRgbString(red, green, blue) {
   return rgb;
 }
 
-module.exports = CanvasDrawer;
+module.exports = {
+  Drawer: CanvasDrawer
+};

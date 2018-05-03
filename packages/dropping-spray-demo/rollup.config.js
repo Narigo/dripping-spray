@@ -4,7 +4,7 @@ const nodeResolve = require("rollup-plugin-node-resolve");
 module.exports = {
   input: "src/demo.js",
   output: {
-    file: "docs/bundle.js",
+    file: "../../docs/bundle.js",
     name: "dropping-spray-demo",
     format: "umd"
   },

@@ -70,7 +70,9 @@
     return rgb;
   }
 
-  var canvasDrawer = CanvasDrawer;
+  var canvasDrawer = {
+    Drawer: CanvasDrawer
+  };
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -355,11 +357,11 @@
   unwrapExports(lib);
 
   var Spray = lib.Spray;
-
+  var Drawer = canvasDrawer.Drawer;
 
   function createCanvasSpray(canvasId, options) {
     var canvas = document.getElementById(canvasId);
-    var drawer = new canvasDrawer(canvas);
+    var drawer = new Drawer(canvas);
 
     var spray;
     var spraying = false;
@@ -466,16 +468,19 @@
 
   var createCanvasSpray_1 = createCanvasSpray;
 
+  var Drawer$1 = canvasDrawer.Drawer;
+
+
   var src = {
-      Drawer : canvasDrawer,
-      createCanvasSpray : createCanvasSpray_1
+    Drawer: Drawer$1,
+    createSpray: createCanvasSpray_1
   };
   var src_1 = src.Drawer;
-  var src_2 = src.createCanvasSpray;
+  var src_2 = src.createSpray;
 
   exports.default = src;
   exports.Drawer = src_1;
-  exports.createCanvasSpray = src_2;
+  exports.createSpray = src_2;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

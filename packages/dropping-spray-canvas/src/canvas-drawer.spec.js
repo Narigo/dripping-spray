@@ -1,5 +1,5 @@
 describe("The canvas painter", function() {
-  var CanvasDrawer = require("./canvas-drawer");
+  var CanvasDrawer = require("./canvas-drawer").Drawer;
   var Shapes = require("dropping-spray").shapes;
   var canvas = document.createElement("canvas");
   canvas.width = 100;

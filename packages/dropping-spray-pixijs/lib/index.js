@@ -39624,10 +39624,14 @@
 	  }
 	}
 
-	var pixiDrawer = PixiDrawer;
+	var pixiDrawer = {
+	  Drawer: PixiDrawer
+	};
+
+	var Drawer = pixiDrawer.Drawer;
 
 	var src$1 = {
-	  Drawer: pixiDrawer
+	  Drawer: Drawer
 	};
 	var src_1 = src$1.Drawer;
 

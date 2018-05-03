@@ -1,4 +1,4 @@
-var Drawer = require("./pixi-drawer");
+var Drawer = require("./pixi-drawer").Drawer;
 
 module.exports = {
   Drawer: Drawer

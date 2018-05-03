@@ -1,37 +1,29 @@
-var Spray = require("dropping-spray").Spray;
-// var Drawer = require('dropping-spray-canvas/src/canvas-drawer.js');
-var Drawer = require("dropping-spray-pixijs").Drawer;
+const Spray = require("dropping-spray").Spray;
+const Drawer = require("dropping-spray-canvas").Drawer;
+// const Drawer = require("dropping-spray-pixijs").Drawer;
 
-var canvas = document.getElementById("spray1");
-var drawer = new Drawer(canvas);
+const canvas = document.getElementById("spray1");
+const drawer = new Drawer(canvas);
 
-var spray;
-var spraying = false;
-var autoSprays = [];
+let spray;
+let spraying = false;
+let autoSprays = [];
 
-var sprayCoords = {
+let sprayCoords = {
   x: 0,
   y: 0
 };
-var requestingAnimationFrame = false;
+let requestingAnimationFrame = false;
 
-var startEventCanvas = downEvent(canvas, function() {
+let startEventCanvas = downEvent(canvas, function() {
   spraying = true;
   if (!requestingAnimationFrame) {
     render();
   }
 });
-var moveEventCanvas = downEvent(canvas);
+let moveEventCanvas = downEvent(canvas);
 
-var options = require("./options.js")(
-  "options",
-  canvas,
-  drawer,
-  createSpray,
-  resetSpray,
-  autoSprays,
-  triggerRender
-);
+let options = require("./options.js")("options", canvas, drawer, createSpray, resetSpray, autoSprays, triggerRender);
 
 window.addEventListener("resize", resize);
 resize();
@@ -52,7 +44,7 @@ function resetSpray() {
 }
 
 function createSpray() {
-  var opts = options.getOptions();
+  const opts = options.getOptions();
 
   return new Spray(opts);
 }
@@ -69,14 +61,14 @@ function triggerRender() {
 }
 
 function render() {
-  var isDrawing;
+  let isDrawing;
   if (spraying) {
     isDrawing = spray.draw(drawer, sprayCoords);
   } else {
     isDrawing = spray.draw(drawer);
   }
 
-  for (var i = autoSprays.length - 1; i >= 0; i--) {
+  for (let i = autoSprays.length - 1; i >= 0; i--) {
     isDrawing = autoSprays[i].draw(drawer) || isDrawing;
   }
 
@@ -92,9 +84,9 @@ function downEvent(canvas, cb) {
   return function(event) {
     event.preventDefault();
     event.stopPropagation();
-    var touchList = event.touches;
+    let touchList = event.touches;
     if (touchList) {
-      var touch = touchList[0];
+      let touch = touchList[0];
       sprayCoords.x = parseInt(touch.pageX) - canvas.offsetLeft;
       sprayCoords.y = parseInt(touch.pageY) - canvas.offsetTop;
     } else {
