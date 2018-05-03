@@ -1,6 +1,6 @@
 # Dropping spray
 
-[!Example of dropping spray](./example.png)
+![Example picture of the spray in action](./example.png)
 
 Monorepo for simulating a real spray can that creates drops when used on the same spot for a bit.
 
