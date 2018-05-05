@@ -642,30 +642,30 @@
 
 	  unwrapExports$$1(lib);
 
-	  var Spray = lib.Spray;
-	  var Drawer = canvasDrawer.Drawer;
+	  const Spray = lib.Spray;
+	  const Drawer = canvasDrawer.Drawer;
 
 	  function createCanvasSpray(canvasId, options) {
-	    var canvas = document.getElementById(canvasId);
-	    var drawer = new Drawer(canvas);
+	    const canvas = document.getElementById(canvasId);
+	    const drawer = new Drawer(canvas);
 
-	    var spray;
-	    var spraying = false;
-	    var autoSprays = [];
+	    let spray;
+	    let spraying = false;
+	    let autoSprays = [];
 
-	    var sprayCoords = {
+	    let sprayCoords = {
 	      x: 0,
 	      y: 0
 	    };
-	    var requestingAnimationFrame = false;
+	    let requestingAnimationFrame = false;
 
-	    var startEventCanvas = downEvent(canvas, function() {
+	    let startEventCanvas = downEvent(canvas, function() {
 	      spraying = true;
 	      if (!requestingAnimationFrame) {
 	        render();
 	      }
 	    });
-	    var moveEventCanvas = downEvent(canvas);
+	    let moveEventCanvas = downEvent(canvas);
 
 	    initListeners();
 	    resize();
@@ -673,9 +673,8 @@
 
 	    return {
 	        destroy: destroy,
-	        reset: resetSpray,
-
-	    }
+	        reset: resetSpray
+	    };
 
 	    // Functions
 	    function resetSpray() {
@@ -683,7 +682,7 @@
 	    }
 
 	    function createSpray() {
-	      var opts = options.getOptions();
+	      let opts = options.getOptions();
 
 	      return new Spray(opts);
 	    }
@@ -694,14 +693,14 @@
 	    }
 
 	    function render() {
-	      var isDrawing;
+	      let isDrawing;
 	      if (spraying) {
 	        isDrawing = spray.draw(drawer, sprayCoords);
 	      } else {
 	        isDrawing = spray.draw(drawer);
 	      }
 
-	      for (var i = autoSprays.length - 1; i >= 0; i--) {
+	      for (let i = autoSprays.length - 1; i >= 0; i--) {
 	        isDrawing = autoSprays[i].draw(drawer) || isDrawing;
 	      }
 
@@ -717,9 +716,9 @@
 	      return function(event) {
 	        event.preventDefault();
 	        event.stopPropagation();
-	        var touchList = event.touches;
+	        let touchList = event.touches;
 	        if (touchList) {
-	          var touch = touchList[0];
+	          let touch = touchList[0];
 	          sprayCoords.x = parseInt(touch.pageX) - canvas.offsetLeft;
 	          sprayCoords.y = parseInt(touch.pageY) - canvas.offsetTop;
 	        } else {
@@ -775,15 +774,7 @@
 
 	unwrapExports(lib$1);
 
-	var options = function(
-	  optionDomId,
-	  canvas,
-	  drawer,
-	  createSpray,
-	  resetSpray,
-	  autoSprays,
-	  triggerRender
-	) {
+	var options = function(optionDomId, canvas, { drawer, createSpray, resetSpray, autoSprays, triggerRender }) {
 	  var form = document.getElementById(optionDomId);
 
 	  function getOptions() {
@@ -851,32 +842,26 @@
 	      autoSpraySpeed = parseInt(form.autoSpraySpeed.value);
 	    });
 
-	    document
-	      .getElementById("clearCanvas")
-	      .addEventListener("click", function() {
-	        resetSpray();
-	        [].forEach.call(autoSprays, function(autoSpray) {
-	          autoSpray.spray.stopDrops();
-	          autoSpray.spray.resetDrops();
-	        });
-	        drawer.clear();
+	    document.getElementById("clearCanvas").addEventListener("click", function() {
+	      resetSpray();
+	      [].forEach.call(autoSprays, function(autoSpray) {
+	        autoSpray.spray.stopDrops();
+	        autoSpray.spray.resetDrops();
 	      });
+	      drawer.clear();
+	    });
 
-	    document
-	      .getElementById("autoSprayStop")
-	      .addEventListener("click", function() {
-	        [].forEach.call(autoSprays, function(autoSpray) {
-	          autoSpray.spray.stopDrops();
-	        });
-	        autoSprays = [];
+	    document.getElementById("autoSprayStop").addEventListener("click", function() {
+	      [].forEach.call(autoSprays, function(autoSpray) {
+	        autoSpray.spray.stopDrops();
 	      });
+	      autoSprays = [];
+	    });
 
-	    document
-	      .getElementById("randomColor")
-	      .addEventListener("click", function() {
-	        randomizeColor();
-	        resetSpray();
-	      });
+	    document.getElementById("randomColor").addEventListener("click", function() {
+	      randomizeColor();
+	      resetSpray();
+	    });
 
 	    document.getElementById("autoSpray").addEventListener("click", function() {
 	      var speed = autoSpraySpeed;
@@ -892,14 +877,10 @@
 	      triggerRender();
 
 	      function sprayFromLeftToRight(drawer) {
-	        autoSprayCoords.x =
-	          autoSprayCoords.x + Math.round(Math.random() * Math.max(0, speed));
+	        autoSprayCoords.x = autoSprayCoords.x + Math.round(Math.random() * Math.max(0, speed));
 	        autoSprayCoords.y = Math.max(
 	          0,
-	          Math.min(
-	            canvas.height - 1,
-	            autoSprayCoords.y + Math.floor(Math.random() * 3) - 1
-	          )
+	          Math.min(canvas.height - 1, autoSprayCoords.y + Math.floor(Math.random() * 3) - 1)
 	        );
 	        if (autoSprayCoords.x < canvas.width) {
 	          autoSpray.spray.draw(drawer, autoSprayCoords);
@@ -952,7 +933,13 @@
 	});
 	let moveEventCanvas = downEvent(canvas);
 
-	let options$1 = options("options", canvas, drawer, createSpray, resetSpray, autoSprays, triggerRender);
+	let options$1 = options("options", canvas, {
+	  drawer,
+	  createSpray,
+	  resetSpray,
+	  autoSprays,
+	  triggerRender
+	});
 
 	window.addEventListener("resize", resize);
 	resize();

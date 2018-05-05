@@ -23,7 +23,13 @@ let startEventCanvas = downEvent(canvas, function() {
 });
 let moveEventCanvas = downEvent(canvas);
 
-let options = require("./options.js")("options", canvas, drawer, createSpray, resetSpray, autoSprays, triggerRender);
+let options = require("./options.js")("options", canvas, {
+  drawer,
+  createSpray,
+  resetSpray,
+  autoSprays,
+  triggerRender
+});
 
 window.addEventListener("resize", resize);
 resize();

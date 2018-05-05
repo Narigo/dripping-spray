@@ -1,12 +1,4 @@
-module.exports = function(
-  optionDomId,
-  canvas,
-  drawer,
-  createSpray,
-  resetSpray,
-  autoSprays,
-  triggerRender
-) {
+module.exports = function(optionDomId, canvas, { drawer, createSpray, resetSpray, autoSprays, triggerRender }) {
   var form = document.getElementById(optionDomId);
 
   function getOptions() {
@@ -74,32 +66,26 @@ module.exports = function(
       autoSpraySpeed = parseInt(form.autoSpraySpeed.value);
     });
 
-    document
-      .getElementById("clearCanvas")
-      .addEventListener("click", function() {
-        resetSpray();
-        [].forEach.call(autoSprays, function(autoSpray) {
-          autoSpray.spray.stopDrops();
-          autoSpray.spray.resetDrops();
-        });
-        drawer.clear();
+    document.getElementById("clearCanvas").addEventListener("click", function() {
+      resetSpray();
+      [].forEach.call(autoSprays, function(autoSpray) {
+        autoSpray.spray.stopDrops();
+        autoSpray.spray.resetDrops();
       });
+      drawer.clear();
+    });
 
-    document
-      .getElementById("autoSprayStop")
-      .addEventListener("click", function() {
-        [].forEach.call(autoSprays, function(autoSpray) {
-          autoSpray.spray.stopDrops();
-        });
-        autoSprays = [];
+    document.getElementById("autoSprayStop").addEventListener("click", function() {
+      [].forEach.call(autoSprays, function(autoSpray) {
+        autoSpray.spray.stopDrops();
       });
+      autoSprays = [];
+    });
 
-    document
-      .getElementById("randomColor")
-      .addEventListener("click", function() {
-        randomizeColor();
-        resetSpray();
-      });
+    document.getElementById("randomColor").addEventListener("click", function() {
+      randomizeColor();
+      resetSpray();
+    });
 
     document.getElementById("autoSpray").addEventListener("click", function() {
       var speed = autoSpraySpeed;
@@ -115,14 +101,10 @@ module.exports = function(
       triggerRender();
 
       function sprayFromLeftToRight(drawer) {
-        autoSprayCoords.x =
-          autoSprayCoords.x + Math.round(Math.random() * Math.max(0, speed));
+        autoSprayCoords.x = autoSprayCoords.x + Math.round(Math.random() * Math.max(0, speed));
         autoSprayCoords.y = Math.max(
           0,
-          Math.min(
-            canvas.height - 1,
-            autoSprayCoords.y + Math.floor(Math.random() * 3) - 1
-          )
+          Math.min(canvas.height - 1, autoSprayCoords.y + Math.floor(Math.random() * 3) - 1)
         );
         if (autoSprayCoords.x < canvas.width) {
           autoSpray.spray.draw(drawer, autoSprayCoords);
