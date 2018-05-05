@@ -31,7 +31,7 @@ First of all, you need to decide what the spray should look like. There are a fe
 provide. Below you can see the default options, which will be set if you don't provide an object or leave out fields
 inside of it:
 
-```
+```javascript
 const Spray = require('./spray.js');
 const options = {}; // You can customize the spray by providing [options](#customizing-spray-options)
 const spray = new Spray(options);
@@ -43,7 +43,7 @@ whatever surface the drawer provides.
 In our example case, we use the `CanvasDrawer` from [dropping-spray-canvas](./packages/dropping-spray-canvas) to draw
 shapes on a canvas DOM element.
 
-```
+```javascript
 const CanvasDrawer = require('./canvas_drawer.js');
 const shapeDrawer = new CanvasDrawer(document.getElementById('myCanvas'));
 ```
@@ -78,7 +78,7 @@ You can customize most of how the spray works by changing the `options` paramete
 mentioned in the usage examples. Here are the default values which will be set if you do not provide a field in your
 `options` object.
 
-```
+```javascript
 {
   color : {            // the color of the spray
     r : 0,             // red
@@ -104,7 +104,7 @@ mentioned in the usage examples. Here are the default values which will be set i
 
 ### Full example
 
-```
+```javascript
 const CanvasDrawer = require('dropping-spray-canvas');
 const Spray = require('dropping-spray');
 const spray = new Spray();
