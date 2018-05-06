@@ -855,7 +855,7 @@
 	      [].forEach.call(autoSprays, function(autoSpray) {
 	        autoSpray.spray.stopDrops();
 	      });
-	      autoSprays = [];
+	      autoSprays.splice(0);
 	    });
 
 	    document.getElementById("randomColor").addEventListener("click", function() {
