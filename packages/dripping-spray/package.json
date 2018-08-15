@@ -1,6 +1,6 @@
 {
   "name": "dripping-spray",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A spray that creates drops when used on the same spot for too long",
   "main": "lib/index.js",
   "scripts": {
