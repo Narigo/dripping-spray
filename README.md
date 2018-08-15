@@ -1,27 +1,27 @@
-# Dropping spray
+# Dripping spray
 
 ![Example picture of the spray in action](./example.png)
 
-Monorepo for simulating a real spray can that creates drops when used on the same spot for a bit.
+Monorepo for simulating a real spray can that creates drips when used on the same spot for a bit.
 
 ## Usage examples
 
 There are multiple ways to use the spray. You can ...
 
-1.  use the `dropping-spray` module and receive shape data for you to draw it how you like or
-2.  use a `dropping-spray-*` drawer module.
+1.  use the `dripping-spray` module and receive shape data for you to draw it how you like or
+2.  use a `dripping-spray-*` drawer module.
 
-If you want to draw on a canvas-DOM element, use the [dropping-spray-canvas](./packages/dropping-spray-canvas) module.
-It will help you set up the spray and canvas. Same for [dropping-spray-pixijs](./packages/dropping-spray-pixijs) which
+If you want to draw on a canvas-DOM element, use the [dripping-spray-canvas](./packages/dripping-spray-canvas) module.
+It will help you set up the spray and canvas. Same for [dripping-spray-pixijs](./packages/dripping-spray-pixijs) which
 uses PixiJS to draw on a canvas instead of a pure implementation.
 
 If you want to draw on something different (for example write out SVGs or similar), you can create your own `Drawer`
-with the underlying [dropping-spray](./packages/dropping-spray) module and let it generate abstract shapes for you that
+with the underlying [dripping-spray](./packages/dripping-spray) module and let it generate abstract shapes for you that
 you can draw.
 
 ### Using a provided `createSpray()` method
 
-The `dropping-spray-*` modules usually provide a `createSpray()` method to simplify drawing, using the animation frame,
+The `dripping-spray-*` modules usually provide a `createSpray()` method to simplify drawing, using the animation frame,
 etc. Please have a look in their documentation if such a short-cut exists. You can also see the guide below how to use
 a `shapeDrawer` and have more control about when and how to animate the spray.
 
@@ -40,7 +40,7 @@ const spray = new Spray(options);
 For the spray to know where to draw to, you need to select a drawer. With a drawer, the spray is able to draw on
 whatever surface the drawer provides.
 
-In our example case, we use the `CanvasDrawer` from [dropping-spray-canvas](./packages/dropping-spray-canvas) to draw
+In our example case, we use the `CanvasDrawer` from [dripping-spray-canvas](./packages/dripping-spray-canvas) to draw
 shapes on a canvas DOM element.
 
 ```javascript
@@ -49,8 +49,8 @@ const shapeDrawer = new CanvasDrawer(document.getElementById('myCanvas'));
 ```
 
 To be able to optimize our `requestAnimationFrame` calls, you need to call the `draw` method of the spray inside of it
-and tell it whether it needs to draw at a specific coordinate or should draw just because there might still be drops
-left. The `draw` method will tell us, whether the spray has some drops left to render.
+and tell it whether it needs to draw at a specific coordinate or should draw just because there might still be drips
+left. The `draw` method will tell us, whether the spray has some drips left to render.
 
 A typical `requestAnimationFrame` could look like this:
 
@@ -63,7 +63,7 @@ function render() {
   if (spraying) {
     stillDrawing = spray.draw(shapeDrawer, currentCoords);
   } else {
-    stillDrawing = spray.draw(shapeDrawer); // it still might have to draw for another frame if there are running drops
+    stillDrawing = spray.draw(shapeDrawer); // it still might have to draw for another frame if there are running drips
   }
 
   if (stillDrawing) {
@@ -92,21 +92,21 @@ mentioned in the usage examples. Here are the default values which will be set i
 
   splatterRadius : 20, // the radius of the spray
 
-  dropper : true,      // whether the spray drops (`true`) or not (`false`)
+  dripper : true,      // whether the spray drips (`true`) or not (`false`)
 
-  dropThreshold : 50,  // when the spray should start to drop - it accumulates the amount of spray inside of the size
-                       // and starts to drop when it reaches the threshold. Think of `dropThreshould / size` is the
-                       // amount of `requestAnimationFrame`-calls the spray would need to start dropping.
+  dripThreshold : 50,  // when the spray should start to drip - it accumulates the amount of spray inside of the size
+                       // and starts to drip when it reaches the threshold. Think of `dripThreshould / size` is the
+                       // amount of `requestAnimationFrame`-calls the spray would need to start dripping.
 
-  dropSpeed : 3        // how fast the drops should flow as soon as they started
+  dripSpeed : 3        // how fast the drips should flow as soon as they started
 }
 ```
 
 ### Full example
 
 ```javascript
-const CanvasDrawer = require('dropping-spray-canvas');
-const Spray = require('dropping-spray');
+const CanvasDrawer = require('dripping-spray-canvas');
+const Spray = require('dripping-spray');
 const spray = new Spray();
 const shapeDrawer = new CanvasDrawer(document.getElementById('myCanvas'));
 
@@ -135,7 +135,7 @@ function render() {
   if (spraying) {
     stillDrawing = spray.draw(shapeDrawer, { x : myX, y: myY });
   } else {
-    stillDrawing = spray.draw(shapeDrawer); // for drops only
+    stillDrawing = spray.draw(shapeDrawer); // for drips only
   }
 
   if (stillDrawing) {

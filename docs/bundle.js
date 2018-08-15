@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global['dropping-spray-demo'] = factory());
+	(global['dripping-spray-demo'] = factory());
 }(this, (function () { 'use strict';
 
 	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -82,9 +82,9 @@
 	    splatterAmount: 10,
 	    splatterRadius: 20,
 
-	    dropper: true,
-	    dropThreshold: 50,
-	    dropSpeed: 3
+	    dripper: true,
+	    dripThreshold: 50,
+	    dripSpeed: 3
 	  };
 
 	  function Spray(options) {
@@ -93,19 +93,19 @@
 	    var size = getOpt("size");
 	    var splatterAmount = getOpt("splatterAmount");
 	    var splatterRadius = getOpt("splatterRadius");
-	    var dropper = getOpt("dropper");
-	    var dropThreshold = getOpt("dropThreshold");
-	    var dropSpeed = getOpt("dropSpeed");
+	    var dripper = getOpt("dripper");
+	    var dripThreshold = getOpt("dripThreshold");
+	    var dripSpeed = getOpt("dripSpeed");
 	    var canvas = opts.canvas;
-	    var dropFns = [];
-	    var drops = [];
+	    var dripFns = [];
+	    var drips = [];
 
-	    initializeDropCounter();
+	    initializeDripCounter();
 
 	    return {
 	      draw: draw,
-	      resetDrops: initializeDropCounter,
-	      stopDrops: stopCurrentDrops
+	      resetDrips: initializeDripCounter,
+	      stopDrips: stopCurrentDrips
 	    };
 
 	    function getOpt(name) {
@@ -118,60 +118,60 @@
 	    }
 
 	    function draw(drawer, sprayCoords) {
-	      var al, amount, sprayedCircles, dropLines;
+	      var al, amount, sprayedCircles, dripLines;
 	      var spraying = !!sprayCoords;
-	      var isDropping = false;
+	      var isDripping = false;
 
 	      if (spraying) {
 	        sprayedCircles = sprayAt(sprayCoords.x, sprayCoords.y);
 	      }
 
-	      al = getDrops();
+	      al = getDrips();
 	      amount = al.amount;
-	      dropLines = al.lines;
+	      dripLines = al.lines;
 
 	      if (sprayedCircles && !sprayedCircles.isEmpty()) {
-	        isDropping = true;
+	        isDripping = true;
 	        drawer.drawShapes(sprayedCircles);
 	      }
 
-	      if ((dropLines && !dropLines.isEmpty()) || amount > 0) {
-	        isDropping = true;
-	        drawer.drawShapes(dropLines);
+	      if ((dripLines && !dripLines.isEmpty()) || amount > 0) {
+	        isDripping = true;
+	        drawer.drawShapes(dripLines);
 	      }
 
-	      return isDropping || spraying;
+	      return isDripping || spraying;
 	    }
 
-	    function getDrops() {
-	      var dropLines = new drawShapes.Lines(color.r, color.g, color.b);
+	    function getDrips() {
+	      var dripLines = new drawShapes.Lines(color.r, color.g, color.b);
 
-	      if (dropper) {
-	        var amount = dropFns.length;
+	      if (dripper) {
+	        var amount = dripFns.length;
 	        for (var i = amount - 1; i >= 0; i--) {
-	          dropFns[i](i, dropLines.shapes);
+	          dripFns[i](i, dripLines.shapes);
 	        }
 	      }
 
 	      return {
 	        amount: amount,
-	        lines: dropLines
+	        lines: dripLines
 	      };
 	    }
 
-	    function stopCurrentDrops() {
-	      dropFns = [];
+	    function stopCurrentDrips() {
+	      dripFns = [];
 	    }
 
-	    function initializeDropCounter() {
+	    function initializeDripCounter() {
 	      for (var x = 0; x < canvas.width / size; x++) {
-	        drops[x] = [];
+	        drips[x] = [];
 	        for (var y = 0; y < canvas.height / size; y++) {
-	          drops[x][y] = {
+	          drips[x][y] = {
 	            count: 0,
-	            drops: false,
+	            drips: false,
 	            width: 0,
-	            dropSpeed: dropSpeed
+	            dripSpeed: dripSpeed
 	          };
 	        }
 	      }
@@ -181,37 +181,37 @@
 	      circleShapes.push(drawShapes.circle(x, y, radius));
 	    }
 
-	    function dropAt(x, y, initialDrop) {
-	      var maxY = drops[x].length - 1;
+	    function dripAt(x, y, initialDrip) {
+	      var maxY = drips[x].length - 1;
 
-	      dropFns.push(createDropFnFor(maxY, x, y, initialDrop));
+	      dripFns.push(createDripFnFor(maxY, x, y, initialDrip));
 	    }
 
-	    function createDropFnFor(maxY, x, y, myDrop) {
+	    function createDripFnFor(maxY, x, y, myDrip) {
 	      return function(idx, shapesArray) {
-	        var deltaWidth, deltaX, nextY, otherDrop;
+	        var deltaWidth, deltaX, nextY, otherDrip;
 
-	        if (myDrop.count <= 0) {
-	          myDrop.count = 0;
-	          dropFns.splice(idx, 1);
+	        if (myDrip.count <= 0) {
+	          myDrip.count = 0;
+	          dripFns.splice(idx, 1);
 	        } else if (y < maxY) {
-	          myDrop.dropSpeed = Math.max(1, myDrop.dropSpeed - myDrop.width);
+	          myDrip.dripSpeed = Math.max(1, myDrip.dripSpeed - myDrip.width);
 
-	          if (myDrop.dropSpeed === 1) {
+	          if (myDrip.dripSpeed === 1) {
 	            deltaWidth = Math.floor(Math.random() * 3) - 1;
 	            deltaX = Math.floor(Math.random() * 3) - 1;
 
-	            // drop next step
+	            // drip next step
 	            nextY = y + 1;
-	            otherDrop = drops[x][nextY];
-	            if (!otherDrop.drops) {
-	              otherDrop.drops = true;
-	              myDrop.count = myDrop.count - myDrop.width;
+	            otherDrip = drips[x][nextY];
+	            if (!otherDrip.drips) {
+	              otherDrip.drips = true;
+	              myDrip.count = myDrip.count - myDrip.width;
 	            }
-	            otherDrop.count += myDrop.count;
-	            otherDrop.width = Math.max(
-	              Math.max(1, myDrop.width + deltaWidth),
-	              otherDrop.width
+	            otherDrip.count += myDrip.count;
+	            otherDrip.width = Math.max(
+	              Math.max(1, myDrip.width + deltaWidth),
+	              otherDrip.width
 	            );
 	            shapesArray.push(
 	              drawShapes.line(
@@ -219,18 +219,18 @@
 	                y * size,
 	                x * size + deltaX,
 	                nextY * size,
-	                myDrop.width
+	                myDrip.width
 	              )
 	            );
 
-	            myDrop.count = 0;
-	            myDrop = otherDrop;
+	            myDrip.count = 0;
+	            myDrip = otherDrip;
 	            y = nextY;
 	          } else {
-	            myDrop.count = myDrop.count + size;
+	            myDrip.count = myDrip.count + size;
 	          }
 
-	          dropFns.splice(idx, 1, createDropFnFor(maxY, x, y, myDrop));
+	          dripFns.splice(idx, 1, createDripFnFor(maxY, x, y, myDrip));
 	        }
 	      };
 	    }
@@ -238,13 +238,13 @@
 	    function sprayAt(x, y) {
 	      var xArea = Math.max(0, Math.floor(Math.min(canvas.width - 1, x) / size));
 	      var yArea = Math.max(0, Math.floor(Math.min(canvas.height - 1, y) / size));
-	      var drop = drops[xArea][yArea];
-	      if (dropper) {
-	        drop.count += size;
-	        if (drop.count >= dropThreshold) {
-	          drop.drops = true;
-	          drop.width = size;
-	          dropAt(xArea, yArea, drop);
+	      var drip = drips[xArea][yArea];
+	      if (dripper) {
+	        drip.count += size;
+	        if (drip.count >= dripThreshold) {
+	          drip.drips = true;
+	          drip.width = size;
+	          dripAt(xArea, yArea, drip);
 	        }
 	      }
 	      var circles = new drawShapes.Circles(color.r, color.g, color.b);
@@ -438,9 +438,9 @@
 	      splatterAmount: 10,
 	      splatterRadius: 20,
 
-	      dropper: true,
-	      dropThreshold: 50,
-	      dropSpeed: 3
+	      dripper: true,
+	      dripThreshold: 50,
+	      dripSpeed: 3
 	    };
 
 	    function Spray(options) {
@@ -449,19 +449,19 @@
 	      var size = getOpt("size");
 	      var splatterAmount = getOpt("splatterAmount");
 	      var splatterRadius = getOpt("splatterRadius");
-	      var dropper = getOpt("dropper");
-	      var dropThreshold = getOpt("dropThreshold");
-	      var dropSpeed = getOpt("dropSpeed");
+	      var dripper = getOpt("dripper");
+	      var dripThreshold = getOpt("dripThreshold");
+	      var dripSpeed = getOpt("dripSpeed");
 	      var canvas = opts.canvas;
-	      var dropFns = [];
-	      var drops = [];
+	      var dripFns = [];
+	      var drips = [];
 
-	      initializeDropCounter();
+	      initializeDripCounter();
 
 	      return {
 	        draw: draw,
-	        resetDrops: initializeDropCounter,
-	        stopDrops: stopCurrentDrops
+	        resetDrips: initializeDripCounter,
+	        stopDrips: stopCurrentDrips
 	      };
 
 	      function getOpt(name) {
@@ -474,60 +474,60 @@
 	      }
 
 	      function draw(drawer, sprayCoords) {
-	        var al, amount, sprayedCircles, dropLines;
+	        var al, amount, sprayedCircles, dripLines;
 	        var spraying = !!sprayCoords;
-	        var isDropping = false;
+	        var isDripping = false;
 
 	        if (spraying) {
 	          sprayedCircles = sprayAt(sprayCoords.x, sprayCoords.y);
 	        }
 
-	        al = getDrops();
+	        al = getDrips();
 	        amount = al.amount;
-	        dropLines = al.lines;
+	        dripLines = al.lines;
 
 	        if (sprayedCircles && !sprayedCircles.isEmpty()) {
-	          isDropping = true;
+	          isDripping = true;
 	          drawer.drawShapes(sprayedCircles);
 	        }
 
-	        if ((dropLines && !dropLines.isEmpty()) || amount > 0) {
-	          isDropping = true;
-	          drawer.drawShapes(dropLines);
+	        if ((dripLines && !dripLines.isEmpty()) || amount > 0) {
+	          isDripping = true;
+	          drawer.drawShapes(dripLines);
 	        }
 
-	        return isDropping || spraying;
+	        return isDripping || spraying;
 	      }
 
-	      function getDrops() {
-	        var dropLines = new drawShapes.Lines(color.r, color.g, color.b);
+	      function getDrips() {
+	        var dripLines = new drawShapes.Lines(color.r, color.g, color.b);
 
-	        if (dropper) {
-	          var amount = dropFns.length;
+	        if (dripper) {
+	          var amount = dripFns.length;
 	          for (var i = amount - 1; i >= 0; i--) {
-	            dropFns[i](i, dropLines.shapes);
+	            dripFns[i](i, dripLines.shapes);
 	          }
 	        }
 
 	        return {
 	          amount: amount,
-	          lines: dropLines
+	          lines: dripLines
 	        };
 	      }
 
-	      function stopCurrentDrops() {
-	        dropFns = [];
+	      function stopCurrentDrips() {
+	        dripFns = [];
 	      }
 
-	      function initializeDropCounter() {
+	      function initializeDripCounter() {
 	        for (var x = 0; x < canvas.width / size; x++) {
-	          drops[x] = [];
+	          drips[x] = [];
 	          for (var y = 0; y < canvas.height / size; y++) {
-	            drops[x][y] = {
+	            drips[x][y] = {
 	              count: 0,
-	              drops: false,
+	              drips: false,
 	              width: 0,
-	              dropSpeed: dropSpeed
+	              dripSpeed: dripSpeed
 	            };
 	          }
 	        }
@@ -537,37 +537,37 @@
 	        circleShapes.push(drawShapes.circle(x, y, radius));
 	      }
 
-	      function dropAt(x, y, initialDrop) {
-	        var maxY = drops[x].length - 1;
+	      function dripAt(x, y, initialDrip) {
+	        var maxY = drips[x].length - 1;
 
-	        dropFns.push(createDropFnFor(maxY, x, y, initialDrop));
+	        dripFns.push(createDripFnFor(maxY, x, y, initialDrip));
 	      }
 
-	      function createDropFnFor(maxY, x, y, myDrop) {
+	      function createDripFnFor(maxY, x, y, myDrip) {
 	        return function(idx, shapesArray) {
-	          var deltaWidth, deltaX, nextY, otherDrop;
+	          var deltaWidth, deltaX, nextY, otherDrip;
 
-	          if (myDrop.count <= 0) {
-	            myDrop.count = 0;
-	            dropFns.splice(idx, 1);
+	          if (myDrip.count <= 0) {
+	            myDrip.count = 0;
+	            dripFns.splice(idx, 1);
 	          } else if (y < maxY) {
-	            myDrop.dropSpeed = Math.max(1, myDrop.dropSpeed - myDrop.width);
+	            myDrip.dripSpeed = Math.max(1, myDrip.dripSpeed - myDrip.width);
 
-	            if (myDrop.dropSpeed === 1) {
+	            if (myDrip.dripSpeed === 1) {
 	              deltaWidth = Math.floor(Math.random() * 3) - 1;
 	              deltaX = Math.floor(Math.random() * 3) - 1;
 
-	              // drop next step
+	              // drip next step
 	              nextY = y + 1;
-	              otherDrop = drops[x][nextY];
-	              if (!otherDrop.drops) {
-	                otherDrop.drops = true;
-	                myDrop.count = myDrop.count - myDrop.width;
+	              otherDrip = drips[x][nextY];
+	              if (!otherDrip.drips) {
+	                otherDrip.drips = true;
+	                myDrip.count = myDrip.count - myDrip.width;
 	              }
-	              otherDrop.count += myDrop.count;
-	              otherDrop.width = Math.max(
-	                Math.max(1, myDrop.width + deltaWidth),
-	                otherDrop.width
+	              otherDrip.count += myDrip.count;
+	              otherDrip.width = Math.max(
+	                Math.max(1, myDrip.width + deltaWidth),
+	                otherDrip.width
 	              );
 	              shapesArray.push(
 	                drawShapes.line(
@@ -575,18 +575,18 @@
 	                  y * size,
 	                  x * size + deltaX,
 	                  nextY * size,
-	                  myDrop.width
+	                  myDrip.width
 	                )
 	              );
 
-	              myDrop.count = 0;
-	              myDrop = otherDrop;
+	              myDrip.count = 0;
+	              myDrip = otherDrip;
 	              y = nextY;
 	            } else {
-	              myDrop.count = myDrop.count + size;
+	              myDrip.count = myDrip.count + size;
 	            }
 
-	            dropFns.splice(idx, 1, createDropFnFor(maxY, x, y, myDrop));
+	            dripFns.splice(idx, 1, createDripFnFor(maxY, x, y, myDrip));
 	          }
 	        };
 	      }
@@ -594,13 +594,13 @@
 	      function sprayAt(x, y) {
 	        var xArea = Math.max(0, Math.floor(Math.min(canvas.width - 1, x) / size));
 	        var yArea = Math.max(0, Math.floor(Math.min(canvas.height - 1, y) / size));
-	        var drop = drops[xArea][yArea];
-	        if (dropper) {
-	          drop.count += size;
-	          if (drop.count >= dropThreshold) {
-	            drop.drops = true;
-	            drop.width = size;
-	            dropAt(xArea, yArea, drop);
+	        var drip = drips[xArea][yArea];
+	        if (dripper) {
+	          drip.count += size;
+	          if (drip.count >= dripThreshold) {
+	            drip.drips = true;
+	            drip.width = size;
+	            dripAt(xArea, yArea, drip);
 	          }
 	        }
 	        var circles = new drawShapes.Circles(color.r, color.g, color.b);
@@ -689,7 +689,7 @@
 
 	    function stopSpraying() {
 	      spraying = false;
-	      spray.resetDrops();
+	      spray.resetDrips();
 	    }
 
 	    function render() {
@@ -792,9 +792,9 @@
 	      size: fieldBetween(form.size, 1, Math.min(canvas.height, canvas.width)),
 	      splatterAmount: fieldBetween(form.splatterAmount, 0, Infinity),
 	      splatterRadius: fieldBetween(form.splatterRadius, 0, Infinity),
-	      dropper: !!form.drops.checked,
-	      dropThreshold: fieldBetween(form.dropThreshold, 0, Infinity),
-	      dropSpeed: fieldBetween(form.dropSpeed, 0, Infinity)
+	      dripper: !!form.drips.checked,
+	      dripThreshold: fieldBetween(form.dripThreshold, 0, Infinity),
+	      dripSpeed: fieldBetween(form.dripSpeed, 0, Infinity)
 	    };
 
 	    function fieldBetween(field, min, max) {
@@ -835,9 +835,9 @@
 	    form.size.addEventListener("change", resetSpray);
 	    form.splatterAmount.addEventListener("change", resetSpray);
 	    form.splatterRadius.addEventListener("change", resetSpray);
-	    form.drops.addEventListener("change", resetSpray);
-	    form.dropThreshold.addEventListener("change", resetSpray);
-	    form.dropSpeed.addEventListener("change", resetSpray);
+	    form.drips.addEventListener("change", resetSpray);
+	    form.dripThreshold.addEventListener("change", resetSpray);
+	    form.dripSpeed.addEventListener("change", resetSpray);
 	    form.autoSpraySpeed.addEventListener("change", function() {
 	      autoSpraySpeed = parseInt(form.autoSpraySpeed.value);
 	    });
@@ -845,15 +845,15 @@
 	    document.getElementById("clearCanvas").addEventListener("click", function() {
 	      resetSpray();
 	      [].forEach.call(autoSprays, function(autoSpray) {
-	        autoSpray.spray.stopDrops();
-	        autoSpray.spray.resetDrops();
+	        autoSpray.spray.stopDrips();
+	        autoSpray.spray.resetDrips();
 	      });
 	      drawer.clear();
 	    });
 
 	    document.getElementById("autoSprayStop").addEventListener("click", function() {
 	      [].forEach.call(autoSprays, function(autoSpray) {
-	        autoSpray.spray.stopDrops();
+	        autoSpray.spray.stopDrips();
 	      });
 	      autoSprays.splice(0);
 	    });
@@ -910,7 +910,7 @@
 
 	const Spray = lib.Spray;
 	const Drawer = lib$1.Drawer;
-	// const Drawer = require("dropping-spray-pixijs").Drawer;
+	// const Drawer = require("dripping-spray-pixijs").Drawer;
 
 	const canvas = document.getElementById("spray1");
 	const drawer = new Drawer(canvas);
@@ -967,7 +967,7 @@
 
 	function stopSpraying() {
 	  spraying = false;
-	  spray.resetDrops();
+	  spray.resetDrips();
 	}
 
 	function triggerRender() {
