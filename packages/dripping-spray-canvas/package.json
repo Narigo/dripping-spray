@@ -1,6 +1,6 @@
 {
   "name": "dripping-spray-canvas",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Draws shapes of dropping spray on a canvas",
   "main": "lib/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "author": "Joern Bernhardt <joern.bernhardt@googlemail.com> (http://www.unreleased.de)",
   "license": "MIT",
   "dependencies": {
-    "dripping-spray": "^1.0.1"
+    "dripping-spray": "^1.0.2"
   },
   "devDependencies": {
     "browserify": "^16.2.3",
