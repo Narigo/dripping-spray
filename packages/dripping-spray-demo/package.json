@@ -1,6 +1,6 @@
 {
   "name": "dripping-spray-demo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "private": true,
   "main": "src/demo.js",
@@ -20,7 +20,7 @@
     "rollup-plugin-node-resolve": "^5.0.0"
   },
   "dependencies": {
-    "dripping-spray": "^1.0.3",
-    "dripping-spray-canvas": "^1.0.3"
+    "dripping-spray": "^1.0.4",
+    "dripping-spray-canvas": "^1.0.4"
   }
 }
