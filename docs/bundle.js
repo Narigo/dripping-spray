@@ -1,10 +1,10 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global['dripping-spray-demo'] = factory());
-}(this, (function () { 'use strict';
+	(global = global || self, global['dripping-spray-demo'] = factory());
+}(this, function () { 'use strict';
 
-	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 	function unwrapExports (x) {
 		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -360,20 +360,20 @@
 	    Drawer: CanvasDrawer
 	  };
 
-	  var commonjsGlobal$$1 = typeof window !== 'undefined' ? window : typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : typeof self !== 'undefined' ? self : {};
+	  var commonjsGlobal$1 = typeof window !== 'undefined' ? window : typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : typeof self !== 'undefined' ? self : {};
 
-	  function unwrapExports$$1 (x) {
+	  function unwrapExports (x) {
 	  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 	  }
 
-	  function createCommonjsModule$$1(fn, module) {
+	  function createCommonjsModule(fn, module) {
 	  	return module = { exports: {} }, fn(module, module.exports), module.exports;
 	  }
 
-	  var lib = createCommonjsModule$$1(function (module, exports) {
+	  var lib = createCommonjsModule(function (module, exports) {
 	  (function (global, factory) {
 	    factory(exports);
-	  }(commonjsGlobal$$1, (function (exports) {
+	  }(commonjsGlobal$1, (function (exports) {
 	    function Circles(red, green, blue) {
 	      var that = this;
 	      this.shape = "circle";
@@ -640,7 +640,7 @@
 	  })));
 	  });
 
-	  unwrapExports$$1(lib);
+	  unwrapExports(lib);
 
 	  const Spray = lib.Spray;
 	  const Drawer = canvasDrawer.Drawer;
@@ -1026,4 +1026,4 @@
 
 	return demo;
 
-})));
+}));
