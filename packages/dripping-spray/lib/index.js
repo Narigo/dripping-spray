@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global['dripping-spray'] = {})));
-}(this, (function (exports) { 'use strict';
+  (global = global || self, factory(global['dripping-spray'] = {}));
+}(this, function (exports) { 'use strict';
 
   function Circles(red, green, blue) {
     var that = this;
@@ -261,10 +261,10 @@
   var src_1 = src.shapes;
   var src_2 = src.Spray;
 
+  exports.Spray = src_2;
   exports.default = src;
   exports.shapes = src_1;
-  exports.Spray = src_2;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));

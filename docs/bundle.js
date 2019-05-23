@@ -17,7 +17,7 @@
 	var lib = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 	  factory(exports);
-	}(commonjsGlobal, (function (exports) {
+	}(commonjsGlobal, function (exports) {
 	  function Circles(red, green, blue) {
 	    var that = this;
 	    this.shape = "circle";
@@ -275,13 +275,13 @@
 	  var src_1 = src.shapes;
 	  var src_2 = src.Spray;
 
+	  exports.Spray = src_2;
 	  exports.default = src;
 	  exports.shapes = src_1;
-	  exports.Spray = src_2;
 
 	  Object.defineProperty(exports, '__esModule', { value: true });
 
-	})));
+	}));
 	});
 
 	unwrapExports(lib);
@@ -289,7 +289,7 @@
 	var lib$1 = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 	  factory(exports);
-	}(commonjsGlobal, (function (exports) {
+	}(commonjsGlobal, function (exports) {
 	  function CanvasDrawer(canvas) {
 	    var ctx = canvas.getContext("2d");
 
@@ -360,7 +360,7 @@
 	    Drawer: CanvasDrawer
 	  };
 
-	  var commonjsGlobal$1 = typeof window !== 'undefined' ? window : typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : typeof self !== 'undefined' ? self : {};
+	  var commonjsGlobal$1 = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : typeof self !== 'undefined' ? self : {};
 
 	  function unwrapExports (x) {
 	  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -373,7 +373,7 @@
 	  var lib = createCommonjsModule(function (module, exports) {
 	  (function (global, factory) {
 	    factory(exports);
-	  }(commonjsGlobal$1, (function (exports) {
+	  }(commonjsGlobal$1, function (exports) {
 	    function Circles(red, green, blue) {
 	      var that = this;
 	      this.shape = "circle";
@@ -631,13 +631,13 @@
 	    var src_1 = src.shapes;
 	    var src_2 = src.Spray;
 
+	    exports.Spray = src_2;
 	    exports.default = src;
 	    exports.shapes = src_1;
-	    exports.Spray = src_2;
 
 	    Object.defineProperty(exports, '__esModule', { value: true });
 
-	  })));
+	  }));
 	  });
 
 	  unwrapExports(lib);
@@ -763,13 +763,13 @@
 	  var src_1 = src.Drawer;
 	  var src_2 = src.createSpray;
 
-	  exports.default = src;
 	  exports.Drawer = src_1;
 	  exports.createSpray = src_2;
+	  exports.default = src;
 
 	  Object.defineProperty(exports, '__esModule', { value: true });
 
-	})));
+	}));
 	});
 
 	unwrapExports(lib$1);

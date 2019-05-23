@@ -1,21 +1,37 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('url'), require('path')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'url', 'path'], factory) :
-	(factory((global['dripping-spray-pixijs'] = {}),global.url,global.path));
-}(this, (function (exports,url,path) { 'use strict';
+	(global = global || self, factory(global['dripping-spray-pixijs'] = {}, global.url, global.path));
+}(this, function (exports, url, path) { 'use strict';
 
 	url = url && url.hasOwnProperty('default') ? url['default'] : url;
 	path = path && path.hasOwnProperty('default') ? path['default'] : path;
 
-	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+	function commonjsRequire () {
+		throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
+	}
 
 	function unwrapExports (x) {
-		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 	}
 
 	function createCommonjsModule(fn, module) {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
 	}
+
+	function getCjsExportFromNamespace (n) {
+		return n && n['default'] || n;
+	}
+
+	var commonjsHelpers = /*#__PURE__*/Object.freeze({
+		commonjsGlobal: commonjsGlobal,
+		commonjsRequire: commonjsRequire,
+		unwrapExports: unwrapExports,
+		createCommonjsModule: createCommonjsModule,
+		getCjsExportFromNamespace: getCjsExportFromNamespace
+	});
 
 	/*
 	object-assign
@@ -7220,7 +7236,7 @@
 
 
 
-	var isMobile$$1 = _interopRequireWildcard(isMobile);
+	var isMobile$1 = _interopRequireWildcard(isMobile);
 
 
 
@@ -7259,7 +7275,7 @@
 	 * console.log(PIXI.utils.hex2string(0xff00ff)); // returns: "#ff00ff"
 	 * @namespace PIXI.utils
 	 */
-	exports.isMobile = isMobile$$1;
+	exports.isMobile = isMobile$1;
 	exports.removeItems = _removeArrayItems2.default;
 	exports.EventEmitter = _eventemitter2.default;
 	exports.pluginTarget = _pluginTarget2.default;
@@ -7334,8 +7350,8 @@
 	 * @param {number} [defaultValue=1] - the defaultValue if no filename prefix is set.
 	 * @return {number} resolution / device pixel ratio of an asset
 	 */
-	function getResolutionOfUrl(url$$1, defaultValue) {
-	    var resolution = _settings2.default.RETINA_PREFIX.exec(url$$1);
+	function getResolutionOfUrl(url, defaultValue) {
+	    var resolution = _settings2.default.RETINA_PREFIX.exec(url);
 
 	    if (resolution) {
 	        return parseFloat(resolution[1]);
@@ -7387,8 +7403,8 @@
 	 * @param {string} url - the image path
 	 * @return {string|undefined} image extension
 	 */
-	function getUrlFileExtension(url$$1) {
-	    var extension = _const.URL_FILE_EXTENSION.exec(url$$1);
+	function getUrlFileExtension(url) {
+	    var extension = _const.URL_FILE_EXTENSION.exec(url);
 
 	    if (extension) {
 	        return extension[1].toLowerCase();
@@ -8335,11 +8351,11 @@
 	 * @param {object} [loc=window.location] - The location object to test against.
 	 * @return {string} The crossOrigin value to use (or empty string for none).
 	 */
-	function determineCrossOrigin(url$$1) {
+	function determineCrossOrigin(url) {
 	    var loc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window.location;
 
 	    // data: and javascript: urls are considered same-origin
-	    if (url$$1.indexOf('data:') === 0) {
+	    if (url.indexOf('data:') === 0) {
 	        return '';
 	    }
 
@@ -8353,13 +8369,13 @@
 	    // let the browser determine the full href for the url of this resource and then
 	    // parse with the node url lib, we can't use the properties of the anchor element
 	    // because they don't work in IE9 :(
-	    tempAnchor.href = url$$1;
-	    url$$1 = _url3.default.parse(tempAnchor.href);
+	    tempAnchor.href = url;
+	    url = _url3.default.parse(tempAnchor.href);
 
-	    var samePort = !url$$1.port && loc.port === '' || url$$1.port === loc.port;
+	    var samePort = !url.port && loc.port === '' || url.port === loc.port;
 
 	    // if cross origin
-	    if (url$$1.hostname !== loc.hostname || !samePort || url$$1.protocol !== loc.protocol) {
+	    if (url.hostname !== loc.hostname || !samePort || url.protocol !== loc.protocol) {
 	        return 'anonymous';
 	    }
 
@@ -10451,10 +10467,10 @@
 	        video.setAttribute('webkit-playsinline', '');
 	        video.setAttribute('playsinline', '');
 
-	        var url$$1 = Array.isArray(videoSrc) ? videoSrc[0].src || videoSrc[0] : videoSrc.src || videoSrc;
+	        var url = Array.isArray(videoSrc) ? videoSrc[0].src || videoSrc[0] : videoSrc.src || videoSrc;
 
-	        if (crossorigin === undefined && url$$1.indexOf('data:') !== 0) {
-	            video.crossOrigin = (0, _determineCrossOrigin2.default)(url$$1);
+	        if (crossorigin === undefined && url.indexOf('data:') !== 0) {
+	            video.crossOrigin = (0, _determineCrossOrigin2.default)(url);
 	        } else if (crossorigin) {
 	            video.crossOrigin = typeof crossorigin === 'string' ? crossorigin : 'anonymous';
 	        }
@@ -10467,7 +10483,7 @@
 	        }
 	        // single object or string
 	        else {
-	                video.appendChild(createSource(url$$1, videoSrc.mime));
+	                video.appendChild(createSource(url, videoSrc.mime));
 	            }
 
 	        video.load();
@@ -10511,15 +10527,15 @@
 
 	VideoBaseTexture.fromUrls = VideoBaseTexture.fromUrl;
 
-	function createSource(path$$1, type) {
+	function createSource(path, type) {
 	    if (!type) {
-	        path$$1 = path$$1.split('?').shift().toLowerCase();
-	        type = 'video/' + path$$1.substr(path$$1.lastIndexOf('.') + 1);
+	        path = path.split('?').shift().toLowerCase();
+	        type = 'video/' + path.substr(path.lastIndexOf('.') + 1);
 	    }
 
 	    var source = document.createElement('source');
 
-	    source.src = path$$1;
+	    source.src = path;
 	    source.type = type;
 
 	    return source;
@@ -15497,20 +15513,20 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	function checkPrecision(src$$1, def) {
-	    if (src$$1 instanceof Array) {
-	        if (src$$1[0].substring(0, 9) !== 'precision') {
-	            var copy = src$$1.slice(0);
+	function checkPrecision(src, def) {
+	    if (src instanceof Array) {
+	        if (src[0].substring(0, 9) !== 'precision') {
+	            var copy = src.slice(0);
 
 	            copy.unshift('precision ' + def + ' float;');
 
 	            return copy;
 	        }
-	    } else if (src$$1.trim().substring(0, 9) !== 'precision') {
-	        return 'precision ' + def + ' float;\n' + src$$1;
+	    } else if (src.trim().substring(0, 9) !== 'precision') {
+	        return 'precision ' + def + ' float;\n' + src;
 	    }
 
-	    return src$$1;
+	    return src;
 	}
 
 	/**
@@ -15639,7 +15655,7 @@
 
 
 
-	var filterTransforms$$1 = _interopRequireWildcard(filterTransforms);
+	var filterTransforms$1 = _interopRequireWildcard(filterTransforms);
 
 
 
@@ -16082,7 +16098,7 @@
 	    FilterManager.prototype.calculateScreenSpaceMatrix = function calculateScreenSpaceMatrix(outputMatrix) {
 	        var currentState = this.filterData.stack[this.filterData.index];
 
-	        return filterTransforms$$1.calculateScreenSpaceMatrix(outputMatrix, currentState.sourceFrame, currentState.renderTarget.size);
+	        return filterTransforms$1.calculateScreenSpaceMatrix(outputMatrix, currentState.sourceFrame, currentState.renderTarget.size);
 	    };
 
 	    /**
@@ -16096,7 +16112,7 @@
 	    FilterManager.prototype.calculateNormalizedScreenSpaceMatrix = function calculateNormalizedScreenSpaceMatrix(outputMatrix) {
 	        var currentState = this.filterData.stack[this.filterData.index];
 
-	        return filterTransforms$$1.calculateNormalizedScreenSpaceMatrix(outputMatrix, currentState.sourceFrame, currentState.renderTarget.size, currentState.destinationFrame);
+	        return filterTransforms$1.calculateNormalizedScreenSpaceMatrix(outputMatrix, currentState.sourceFrame, currentState.renderTarget.size, currentState.destinationFrame);
 	    };
 
 	    /**
@@ -16111,7 +16127,7 @@
 	    FilterManager.prototype.calculateSpriteMatrix = function calculateSpriteMatrix(outputMatrix, sprite) {
 	        var currentState = this.filterData.stack[this.filterData.index];
 
-	        return filterTransforms$$1.calculateSpriteMatrix(outputMatrix, currentState.sourceFrame, currentState.renderTarget.size, sprite);
+	        return filterTransforms$1.calculateSpriteMatrix(outputMatrix, currentState.sourceFrame, currentState.renderTarget.size, sprite);
 	    };
 
 	    /**
@@ -17981,19 +17997,19 @@
 	}
 
 	function generateIfTestSrc(maxIfs) {
-	    var src$$1 = '';
+	    var src = '';
 
 	    for (var i = 0; i < maxIfs; ++i) {
 	        if (i > 0) {
-	            src$$1 += '\nelse ';
+	            src += '\nelse ';
 	        }
 
 	        if (i < maxIfs - 1) {
-	            src$$1 += 'if(test == ' + i + '.0){}';
+	            src += 'if(test == ' + i + '.0){}';
 	        }
 	    }
 
-	    return src$$1;
+	    return src;
 	}
 
 	});
@@ -21065,7 +21081,7 @@
 	 * @return {number[]} Array of points of the curve
 	 */
 	function bezierCurveTo(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY, n) {
-	    var path$$1 = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : [];
+	    var path = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : [];
 
 	    var dt = 0;
 	    var dt2 = 0;
@@ -21073,7 +21089,7 @@
 	    var t2 = 0;
 	    var t3 = 0;
 
-	    path$$1.push(fromX, fromY);
+	    path.push(fromX, fromY);
 
 	    for (var i = 1, j = 0; i <= n; ++i) {
 	        j = i / n;
@@ -21085,10 +21101,10 @@
 	        t2 = j * j;
 	        t3 = t2 * j;
 
-	        path$$1.push(dt3 * fromX + 3 * dt2 * j * cpX + 3 * dt * t2 * cpX2 + t3 * toX, dt3 * fromY + 3 * dt2 * j * cpY + 3 * dt * t2 * cpY2 + t3 * toY);
+	        path.push(dt3 * fromX + 3 * dt2 * j * cpX + 3 * dt * t2 * cpX2 + t3 * toX, dt3 * fromY + 3 * dt2 * j * cpY + 3 * dt * t2 * cpY2 + t3 * toY);
 	    }
 
-	    return path$$1;
+	    return path;
 	}
 
 	});
@@ -21920,10 +21936,10 @@
 	     */
 
 
-	    Graphics.prototype.drawPolygon = function drawPolygon(path$$1) {
+	    Graphics.prototype.drawPolygon = function drawPolygon(path) {
 	        // prevents an argument assignment deopt
 	        // see section 3.1: https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
-	        var points = path$$1;
+	        var points = path;
 
 	        var closed = true;
 
@@ -24243,7 +24259,7 @@
 
 
 
-	var utils$$1 = _interopRequireWildcard(utils);
+	var utils$1 = _interopRequireWildcard(utils);
 
 
 
@@ -24297,7 +24313,7 @@
 	        forceCanvas = arg3;
 	    }
 
-	    if (!forceCanvas && utils$$1.isWebGLSupported()) {
+	    if (!forceCanvas && utils$1.isWebGLSupported()) {
 	        return new _WebGLRenderer2.default(options, arg1, arg2);
 	    }
 
@@ -24502,14 +24518,14 @@
 
 	    _createClass(Application, [{
 	        key: 'ticker',
-	        set: function set(ticker$$1) // eslint-disable-line require-jsdoc
+	        set: function set(ticker) // eslint-disable-line require-jsdoc
 	        {
 	            if (this._ticker) {
 	                this._ticker.remove(this.render, this);
 	            }
-	            this._ticker = ticker$$1;
-	            if (ticker$$1) {
-	                ticker$$1.add(this.render, this, _const.UPDATE_PRIORITY.LOW);
+	            this._ticker = ticker;
+	            if (ticker) {
+	                ticker.add(this.render, this, _const.UPDATE_PRIORITY.LOW);
 	            }
 	        },
 	        get: function get() // eslint-disable-line require-jsdoc
@@ -24899,11 +24915,11 @@
 
 
 
-	var utils$$1 = _interopRequireWildcard(utils);
+	var utils$1 = _interopRequireWildcard(utils);
 
 
 
-	var ticker$$1 = _interopRequireWildcard(ticker);
+	var ticker$1 = _interopRequireWildcard(ticker);
 
 
 
@@ -24922,8 +24938,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.settings = _settings2.default;
-	exports.utils = utils$$1;
-	exports.ticker = ticker$$1;
+	exports.utils = utils$1;
+	exports.ticker = ticker$1;
 	exports.CanvasRenderer = _CanvasRenderer2.default;
 	exports.WebGLRenderer = _WebGLRenderer2.default; /**
 	                                                  * @namespace PIXI
@@ -26200,7 +26216,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -26217,7 +26233,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	// add some extra variables to the container..
-	core$$1.utils.mixins.delayMixin(core$$1.DisplayObject.prototype, _accessibleTarget2.default);
+	core$1.utils.mixins.delayMixin(core$1.DisplayObject.prototype, _accessibleTarget2.default);
 
 	var KEY_CODE_TAB = 9;
 
@@ -26472,7 +26488,7 @@
 	            if (child.renderId !== this.renderId) {
 	                child._accessibleActive = false;
 
-	                core$$1.utils.removeItems(this.children, i, 1);
+	                core$1.utils.removeItems(this.children, i, 1);
 	                this.div.removeChild(child._accessibleDiv);
 	                this.pool.push(child._accessibleDiv);
 	                child._accessibleDiv = null;
@@ -26719,8 +26735,8 @@
 	exports.default = AccessibilityManager;
 
 
-	core$$1.WebGLRenderer.registerPlugin('accessibility', AccessibilityManager);
-	core$$1.CanvasRenderer.registerPlugin('accessibility', AccessibilityManager);
+	core$1.WebGLRenderer.registerPlugin('accessibility', AccessibilityManager);
+	core$1.CanvasRenderer.registerPlugin('accessibility', AccessibilityManager);
 
 	});
 
@@ -26760,13 +26776,13 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var TEMP_RECT = new core$$1.Rectangle();
+	var TEMP_RECT = new core$1.Rectangle();
 	var BYTES_PER_PIXEL = 4;
 
 	/**
@@ -26846,7 +26862,7 @@
 	        var generated = false;
 
 	        if (target) {
-	            if (target instanceof core$$1.RenderTexture) {
+	            if (target instanceof core$1.RenderTexture) {
 	                renderTexture = target;
 	            } else {
 	                renderTexture = this.renderer.generateTexture(target);
@@ -26872,7 +26888,7 @@
 	        var width = frame.width * resolution;
 	        var height = frame.height * resolution;
 
-	        var canvasBuffer = new core$$1.CanvasRenderTarget(width, height, 1);
+	        var canvasBuffer = new core$1.CanvasRenderTarget(width, height, 1);
 
 	        if (textureBuffer) {
 	            // bind the buffer
@@ -26927,7 +26943,7 @@
 	        var generated = false;
 
 	        if (target) {
-	            if (target instanceof core$$1.RenderTexture) {
+	            if (target instanceof core$1.RenderTexture) {
 	                renderTexture = target;
 	            } else {
 	                renderTexture = this.renderer.generateTexture(target);
@@ -26986,7 +27002,7 @@
 	exports.default = WebGLExtract;
 
 
-	core$$1.WebGLRenderer.registerPlugin('extract', WebGLExtract);
+	core$1.WebGLRenderer.registerPlugin('extract', WebGLExtract);
 
 	});
 
@@ -26998,13 +27014,13 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var TEMP_RECT = new core$$1.Rectangle();
+	var TEMP_RECT = new core$1.Rectangle();
 
 	/**
 	 * The extract manager provides functionality to export content from the renderers.
@@ -27081,7 +27097,7 @@
 	        var renderTexture = void 0;
 
 	        if (target) {
-	            if (target instanceof core$$1.RenderTexture) {
+	            if (target instanceof core$1.RenderTexture) {
 	                renderTexture = target;
 	            } else {
 	                renderTexture = renderer.generateTexture(target);
@@ -27103,7 +27119,7 @@
 	        var width = frame.width * resolution;
 	        var height = frame.height * resolution;
 
-	        var canvasBuffer = new core$$1.CanvasRenderTarget(width, height, 1);
+	        var canvasBuffer = new core$1.CanvasRenderTarget(width, height, 1);
 	        var canvasData = context.getImageData(frame.x * resolution, frame.y * resolution, width, height);
 
 	        canvasBuffer.context.putImageData(canvasData, 0, 0);
@@ -27130,7 +27146,7 @@
 	        var renderTexture = void 0;
 
 	        if (target) {
-	            if (target instanceof core$$1.RenderTexture) {
+	            if (target instanceof core$1.RenderTexture) {
 	                renderTexture = target;
 	            } else {
 	                renderTexture = renderer.generateTexture(target);
@@ -27169,7 +27185,7 @@
 	exports.default = CanvasExtract;
 
 
-	core$$1.CanvasRenderer.registerPlugin('extract', CanvasExtract);
+	core$1.CanvasRenderer.registerPlugin('extract', CanvasExtract);
 
 	});
 
@@ -27211,7 +27227,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -27275,7 +27291,7 @@
 	        /**
 	         * @private
 	         */
-	        var _this = _possibleConstructorReturn(this, _core$Sprite.call(this, textures[0] instanceof core$$1.Texture ? textures[0] : textures[0].texture));
+	        var _this = _possibleConstructorReturn(this, _core$Sprite.call(this, textures[0] instanceof core$1.Texture ? textures[0] : textures[0].texture));
 
 	        _this._textures = null;
 
@@ -27362,7 +27378,7 @@
 
 	        this.playing = false;
 	        if (this._autoUpdate) {
-	            core$$1.ticker.shared.remove(this.update, this);
+	            core$1.ticker.shared.remove(this.update, this);
 	        }
 	    };
 
@@ -27379,7 +27395,7 @@
 
 	        this.playing = true;
 	        if (this._autoUpdate) {
-	            core$$1.ticker.shared.add(this.update, this, core$$1.UPDATE_PRIORITY.HIGH);
+	            core$1.ticker.shared.add(this.update, this, core$1.UPDATE_PRIORITY.HIGH);
 	        }
 	    };
 
@@ -27529,7 +27545,7 @@
 	        var textures = [];
 
 	        for (var i = 0; i < frames.length; ++i) {
-	            textures.push(core$$1.Texture.fromFrame(frames[i]));
+	            textures.push(core$1.Texture.fromFrame(frames[i]));
 	        }
 
 	        return new AnimatedSprite(textures);
@@ -27548,7 +27564,7 @@
 	        var textures = [];
 
 	        for (var i = 0; i < images.length; ++i) {
-	            textures.push(core$$1.Texture.fromImage(images[i]));
+	            textures.push(core$1.Texture.fromImage(images[i]));
 	        }
 
 	        return new AnimatedSprite(textures);
@@ -27583,7 +27599,7 @@
 	        },
 	        set: function set(value) // eslint-disable-line require-jsdoc
 	        {
-	            if (value[0] instanceof core$$1.Texture) {
+	            if (value[0] instanceof core$1.Texture) {
 	                this._textures = value;
 	                this._durations = null;
 	            } else {
@@ -27620,7 +27636,7 @@
 	    }]);
 
 	    return AnimatedSprite;
-	}(core$$1.Sprite);
+	}(core$1.Sprite);
 
 	exports.default = AnimatedSprite;
 
@@ -27636,7 +27652,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -27652,7 +27668,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var tempPoint = new core$$1.Point();
+	var tempPoint = new core$1.Point();
 
 	/**
 	 * A tiling sprite is a fast way of rendering a tiling image
@@ -27683,7 +27699,7 @@
 	         */
 	        var _this = _possibleConstructorReturn(this, _core$Sprite.call(this, texture));
 
-	        _this.tileTransform = new core$$1.TransformStatic();
+	        _this.tileTransform = new core$1.TransformStatic();
 
 	        // /// private
 
@@ -27716,7 +27732,7 @@
 	         *
 	         * @member {PIXI.TextureMatrix}
 	         */
-	        _this.uvTransform = texture.transform || new core$$1.TextureMatrix(texture);
+	        _this.uvTransform = texture.transform || new core$1.TextureMatrix(texture);
 
 	        /**
 	         * Plugin that is responsible for rendering this element.
@@ -27805,7 +27821,7 @@
 	        if (this._textureID !== this._texture._updateID || this.cachedTint !== this.tint) {
 	            this._textureID = this._texture._updateID;
 	            // cut an object from a spritesheet..
-	            var tempCanvas = new core$$1.CanvasRenderTarget(texture._frame.width, texture._frame.height, baseTextureResolution);
+	            var tempCanvas = new core$1.CanvasRenderTarget(texture._frame.width, texture._frame.height, baseTextureResolution);
 
 	            // Tint the tiling sprite
 	            if (this.tint !== 0xFFFFFF) {
@@ -27878,7 +27894,7 @@
 
 	            if (!rect) {
 	                if (!this._localBoundsRect) {
-	                    this._localBoundsRect = new core$$1.Rectangle();
+	                    this._localBoundsRect = new core$1.Rectangle();
 	                }
 
 	                rect = this._localBoundsRect;
@@ -27948,7 +27964,7 @@
 
 
 	    TilingSprite.from = function from(source, width, height) {
-	        return new TilingSprite(core$$1.Texture.from(source), width, height);
+	        return new TilingSprite(core$1.Texture.from(source), width, height);
 	    };
 
 	    /**
@@ -27964,7 +27980,7 @@
 
 
 	    TilingSprite.fromFrame = function fromFrame(frameId, width, height) {
-	        var texture = core$$1.utils.TextureCache[frameId];
+	        var texture = core$1.utils.TextureCache[frameId];
 
 	        if (!texture) {
 	            throw new Error('The frameId "' + frameId + '" does not exist in the texture cache ' + this);
@@ -27989,7 +28005,7 @@
 
 
 	    TilingSprite.fromImage = function fromImage(imageId, width, height, crossorigin, scaleMode) {
-	        return new TilingSprite(core$$1.Texture.fromImage(imageId, crossorigin, scaleMode), width, height);
+	        return new TilingSprite(core$1.Texture.fromImage(imageId, crossorigin, scaleMode), width, height);
 	    };
 
 	    /**
@@ -28069,7 +28085,7 @@
 	    }]);
 
 	    return TilingSprite;
-	}(core$$1.Sprite);
+	}(core$1.Sprite);
 
 	exports.default = TilingSprite;
 
@@ -28083,7 +28099,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -28097,7 +28113,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var tempMat = new core$$1.Matrix();
+	var tempMat = new core$1.Matrix();
 
 	/**
 	 * WebGL renderer plugin for tiling sprites
@@ -28136,11 +28152,11 @@
 	    TilingSpriteRenderer.prototype.onContextChange = function onContextChange() {
 	        var gl = this.renderer.gl;
 
-	        this.shader = new core$$1.Shader(gl, 'attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n', 'varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\nuniform mat3 uMapCoord;\nuniform vec4 uClampFrame;\nuniform vec2 uClampOffset;\n\nvoid main(void)\n{\n    vec2 coord = mod(vTextureCoord - uClampOffset, vec2(1.0, 1.0)) + uClampOffset;\n    coord = (uMapCoord * vec3(coord, 1.0)).xy;\n    coord = clamp(coord, uClampFrame.xy, uClampFrame.zw);\n\n    vec4 sample = texture2D(uSampler, coord);\n    gl_FragColor = sample * uColor;\n}\n');
-	        this.simpleShader = new core$$1.Shader(gl, 'attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n', 'varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\n\nvoid main(void)\n{\n    vec4 sample = texture2D(uSampler, vTextureCoord);\n    gl_FragColor = sample * uColor;\n}\n');
+	        this.shader = new core$1.Shader(gl, 'attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n', 'varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\nuniform mat3 uMapCoord;\nuniform vec4 uClampFrame;\nuniform vec2 uClampOffset;\n\nvoid main(void)\n{\n    vec2 coord = mod(vTextureCoord - uClampOffset, vec2(1.0, 1.0)) + uClampOffset;\n    coord = (uMapCoord * vec3(coord, 1.0)).xy;\n    coord = clamp(coord, uClampFrame.xy, uClampFrame.zw);\n\n    vec4 sample = texture2D(uSampler, coord);\n    gl_FragColor = sample * uColor;\n}\n');
+	        this.simpleShader = new core$1.Shader(gl, 'attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n', 'varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform vec4 uColor;\n\nvoid main(void)\n{\n    vec4 sample = texture2D(uSampler, vTextureCoord);\n    gl_FragColor = sample * uColor;\n}\n');
 
 	        this.renderer.bindVao(null);
-	        this.quad = new core$$1.Quad(gl, this.renderer.state.attribState);
+	        this.quad = new core$1.Quad(gl, this.renderer.state.attribState);
 	        this.quad.initVao(this.shader);
 	    };
 
@@ -28220,23 +28236,23 @@
 	        }
 
 	        shader.uniforms.uTransform = tempMat.toArray(true);
-	        shader.uniforms.uColor = core$$1.utils.premultiplyTintToRgba(ts.tint, ts.worldAlpha, shader.uniforms.uColor, baseTex.premultipliedAlpha);
+	        shader.uniforms.uColor = core$1.utils.premultiplyTintToRgba(ts.tint, ts.worldAlpha, shader.uniforms.uColor, baseTex.premultipliedAlpha);
 	        shader.uniforms.translationMatrix = ts.transform.worldTransform.toArray(true);
 
 	        shader.uniforms.uSampler = renderer.bindTexture(tex);
 
-	        renderer.setBlendMode(core$$1.utils.correctBlendMode(ts.blendMode, baseTex.premultipliedAlpha));
+	        renderer.setBlendMode(core$1.utils.correctBlendMode(ts.blendMode, baseTex.premultipliedAlpha));
 
 	        quad.vao.draw(this.renderer.gl.TRIANGLES, 6, 0);
 	    };
 
 	    return TilingSpriteRenderer;
-	}(core$$1.ObjectRenderer);
+	}(core$1.ObjectRenderer);
 
 	exports.default = TilingSpriteRenderer;
 
 
-	core$$1.WebGLRenderer.registerPlugin('tilingSprite', TilingSpriteRenderer);
+	core$1.WebGLRenderer.registerPlugin('tilingSprite', TilingSpriteRenderer);
 
 	});
 
@@ -28250,7 +28266,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -28421,7 +28437,7 @@
 	    BitmapText.prototype.updateText = function updateText() {
 	        var data = BitmapText.fonts[this._font.name];
 	        var scale = this._font.size / data.size;
-	        var pos = new core$$1.Point();
+	        var pos = new core$1.Point();
 	        var chars = [];
 	        var lineWidths = [];
 	        var text = this.text.replace(/(?:\r\n|\r)/g, '\n');
@@ -28472,7 +28488,7 @@
 	                texture: charData.texture,
 	                line: line,
 	                charCode: charCode,
-	                position: new core$$1.Point(pos.x + charData.xOffset + this._letterSpacing / 2, pos.y + charData.yOffset)
+	                position: new core$1.Point(pos.x + charData.xOffset + this._letterSpacing / 2, pos.y + charData.yOffset)
 	            });
 	            pos.x += charData.xAdvance + this._letterSpacing;
 	            lastLineWidth = pos.x;
@@ -28481,7 +28497,7 @@
 
 	            if (lastBreakPos !== -1 && maxWidth > 0 && pos.x > maxWidth) {
 	                ++spacesRemoved;
-	                core$$1.utils.removeItems(chars, 1 + lastBreakPos - spacesRemoved, 1 + i - lastBreakPos);
+	                core$1.utils.removeItems(chars, 1 + lastBreakPos - spacesRemoved, 1 + i - lastBreakPos);
 	                i = lastBreakPos;
 	                lastBreakPos = -1;
 
@@ -28529,7 +28545,7 @@
 	            if (c) {
 	                c.texture = chars[_i2].texture;
 	            } else {
-	                c = new core$$1.Sprite(chars[_i2].texture);
+	                c = new core$1.Sprite(chars[_i2].texture);
 	                this._glyphs.push(c);
 	            }
 
@@ -28630,7 +28646,7 @@
 	        data.chars = {};
 
 	        // Single texture, convert to list
-	        if (textures instanceof core$$1.Texture) {
+	        if (textures instanceof core$1.Texture) {
 	            textures = [textures];
 	        }
 
@@ -28650,14 +28666,14 @@
 	            var letter = letters[_i5];
 	            var charCode = parseInt(letter.getAttribute('id'), 10);
 	            var page = letter.getAttribute('page') || 0;
-	            var textureRect = new core$$1.Rectangle(parseInt(letter.getAttribute('x'), 10) / res + pagesTextures[page].frame.x / res, parseInt(letter.getAttribute('y'), 10) / res + pagesTextures[page].frame.y / res, parseInt(letter.getAttribute('width'), 10) / res, parseInt(letter.getAttribute('height'), 10) / res);
+	            var textureRect = new core$1.Rectangle(parseInt(letter.getAttribute('x'), 10) / res + pagesTextures[page].frame.x / res, parseInt(letter.getAttribute('y'), 10) / res + pagesTextures[page].frame.y / res, parseInt(letter.getAttribute('width'), 10) / res, parseInt(letter.getAttribute('height'), 10) / res);
 
 	            data.chars[charCode] = {
 	                xOffset: parseInt(letter.getAttribute('xoffset'), 10) / res,
 	                yOffset: parseInt(letter.getAttribute('yoffset'), 10) / res,
 	                xAdvance: parseInt(letter.getAttribute('xadvance'), 10) / res,
 	                kerning: {},
-	                texture: new core$$1.Texture(pagesTextures[page].baseTexture, textureRect),
+	                texture: new core$1.Texture(pagesTextures[page].baseTexture, textureRect),
 	                page: page
 	            };
 	        }
@@ -28879,7 +28895,7 @@
 	    }]);
 
 	    return BitmapText;
-	}(core$$1.Container);
+	}(core$1.Container);
 
 	exports.default = BitmapText;
 
@@ -28894,7 +28910,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -28912,8 +28928,8 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var DisplayObject = core$$1.DisplayObject;
-	var _tempMatrix = new core$$1.Matrix();
+	var DisplayObject = core$1.DisplayObject;
+	var _tempMatrix = new core$1.Matrix();
 
 	DisplayObject.prototype._cacheAsBitmap = false;
 	DisplayObject.prototype._cacheData = false;
@@ -29084,7 +29100,7 @@
 
 	    // this renderTexture will be used to store the cached DisplayObject
 
-	    var renderTexture = core$$1.RenderTexture.create(bounds.width | 0, bounds.height | 0);
+	    var renderTexture = core$1.RenderTexture.create(bounds.width | 0, bounds.height | 0);
 
 	    var textureCacheId = 'cacheAsBitmap_' + (0, utils.uid)();
 
@@ -29119,7 +29135,7 @@
 	    this.filterArea = null;
 
 	    // create our cached sprite
-	    var cachedSprite = new core$$1.Sprite(renderTexture);
+	    var cachedSprite = new core$1.Sprite(renderTexture);
 
 	    cachedSprite.transform.worldTransform = this.transform.worldTransform;
 	    cachedSprite.anchor.x = -(bounds.x / bounds.width);
@@ -29188,7 +29204,7 @@
 
 	    var cachedRenderTarget = renderer.context;
 
-	    var renderTexture = core$$1.RenderTexture.create(bounds.width | 0, bounds.height | 0);
+	    var renderTexture = core$1.RenderTexture.create(bounds.width | 0, bounds.height | 0);
 
 	    var textureCacheId = 'cacheAsBitmap_' + (0, utils.uid)();
 
@@ -29223,7 +29239,7 @@
 	    this.filterArea = null;
 
 	    // create our cached sprite
-	    var cachedSprite = new core$$1.Sprite(renderTexture);
+	    var cachedSprite = new core$1.Sprite(renderTexture);
 
 	    cachedSprite.transform.worldTransform = this.transform.worldTransform;
 	    cachedSprite.anchor.x = -(bounds.x / bounds.width);
@@ -29301,7 +29317,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -29311,7 +29327,7 @@
 	 * @memberof PIXI.DisplayObject#
 	 * @member {string} name
 	 */
-	core$$1.DisplayObject.prototype.name = null;
+	core$1.DisplayObject.prototype.name = null;
 
 	/**
 	 * Returns the display object in the container
@@ -29321,7 +29337,7 @@
 	 * @param {string} name - instance name
 	 * @return {PIXI.DisplayObject} The child with the specified name.
 	 */
-	core$$1.Container.prototype.getChildByName = function getChildByName(name) {
+	core$1.Container.prototype.getChildByName = function getChildByName(name) {
 	    for (var i = 0; i < this.children.length; i++) {
 	        if (this.children[i].name === name) {
 	            return this.children[i];
@@ -29339,7 +29355,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -29354,8 +29370,8 @@
 	 *  nice performance boost
 	 * @return {Point} The updated point
 	 */
-	core$$1.DisplayObject.prototype.getGlobalPosition = function getGlobalPosition() {
-	    var point = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new core$$1.Point();
+	core$1.DisplayObject.prototype.getGlobalPosition = function getGlobalPosition() {
+	    var point = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new core$1.Point();
 	    var skipUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	    if (this.parent) {
@@ -29437,7 +29453,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -29480,7 +29496,7 @@
 	    }
 
 	    return FXAAFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = FXAAFilter;
 
@@ -29496,7 +29512,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -29580,7 +29596,7 @@
 	    }]);
 
 	    return NoiseFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = NoiseFilter;
 
@@ -29596,7 +29612,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -29629,7 +29645,7 @@
 	    function DisplacementFilter(sprite, scale) {
 	        _classCallCheck(this, DisplacementFilter);
 
-	        var maskMatrix = new core$$1.Matrix();
+	        var maskMatrix = new core$1.Matrix();
 
 	        sprite.renderable = false;
 
@@ -29650,7 +29666,7 @@
 	            scale = 20;
 	        }
 
-	        _this.scale = new core$$1.Point(scale, scale);
+	        _this.scale = new core$1.Point(scale, scale);
 	        return _this;
 	    }
 
@@ -29691,7 +29707,7 @@
 	    }]);
 
 	    return DisplacementFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = DisplacementFilter;
 
@@ -29823,7 +29839,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -29876,7 +29892,7 @@
 	        // fragment shader
 	        fragSrc));
 
-	        _this.resolution = resolution || core$$1.settings.RESOLUTION;
+	        _this.resolution = resolution || core$1.settings.RESOLUTION;
 
 	        _this._quality = 0;
 
@@ -29976,7 +29992,7 @@
 	    }]);
 
 	    return BlurXFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = BlurXFilter;
 
@@ -29992,7 +30008,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -30045,7 +30061,7 @@
 	        // fragment shader
 	        fragSrc));
 
-	        _this.resolution = resolution || core$$1.settings.RESOLUTION;
+	        _this.resolution = resolution || core$1.settings.RESOLUTION;
 
 	        _this._quality = 0;
 
@@ -30144,7 +30160,7 @@
 	    }]);
 
 	    return BlurYFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = BlurYFilter;
 
@@ -30160,7 +30176,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -30206,7 +30222,7 @@
 	        _this.blurYFilter = new _BlurYFilter2.default(strength, quality, resolution, kernelSize);
 
 	        _this.padding = 0;
-	        _this.resolution = resolution || core$$1.settings.RESOLUTION;
+	        _this.resolution = resolution || core$1.settings.RESOLUTION;
 	        _this.quality = quality || 4;
 	        _this.blur = strength || 8;
 	        return _this;
@@ -30321,7 +30337,7 @@
 	    }]);
 
 	    return BlurFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = BlurFilter;
 
@@ -30337,7 +30353,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -30871,7 +30887,7 @@
 	    }]);
 
 	    return ColorMatrixFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	// Americanized alias
 
@@ -30891,7 +30907,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -30962,7 +30978,7 @@
 	    }]);
 
 	    return AlphaFilter;
-	}(core$$1.Filter);
+	}(core$1.Filter);
 
 	exports.default = AlphaFilter;
 
@@ -31060,7 +31076,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -31084,7 +31100,7 @@
 	     *
 	     * @member {PIXI.Point}
 	     */
-	    this.global = new core$$1.Point();
+	    this.global = new core$1.Point();
 
 	    /**
 	     * The target DisplayObject that was interacted with
@@ -31671,7 +31687,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -31704,7 +31720,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	// Mix interactiveTarget into core.DisplayObject.prototype, after deprecation has been handled
-	core$$1.utils.mixins.delayMixin(core$$1.DisplayObject.prototype, _interactiveTarget2.default);
+	core$1.utils.mixins.delayMixin(core$1.DisplayObject.prototype, _interactiveTarget2.default);
 
 	var MOUSE_POINTER_ID = 1;
 
@@ -31938,7 +31954,7 @@
 	         * @private
 	         * @member {PIXI.Point}
 	         */
-	        _this._tempPoint = new core$$1.Point();
+	        _this._tempPoint = new core$1.Point();
 
 	        /**
 	         * The current resolution / device pixel ratio.
@@ -32408,7 +32424,7 @@
 	            return;
 	        }
 
-	        core$$1.ticker.shared.add(this.update, this, core$$1.UPDATE_PRIORITY.INTERACTION);
+	        core$1.ticker.shared.add(this.update, this, core$1.UPDATE_PRIORITY.INTERACTION);
 
 	        if (window.navigator.msPointerEnabled) {
 	            this.interactionDOMElement.style['-ms-content-zooming'] = 'none';
@@ -32464,7 +32480,7 @@
 	            return;
 	        }
 
-	        core$$1.ticker.shared.remove(this.update, this);
+	        core$1.ticker.shared.remove(this.update, this);
 
 	        if (window.navigator.msPointerEnabled) {
 	            this.interactionDOMElement.style['-ms-content-zooming'] = '';
@@ -33441,8 +33457,8 @@
 	exports.default = InteractionManager;
 
 
-	core$$1.WebGLRenderer.registerPlugin('interaction', InteractionManager);
-	core$$1.CanvasRenderer.registerPlugin('interaction', InteractionManager);
+	core$1.WebGLRenderer.registerPlugin('interaction', InteractionManager);
+	core$1.CanvasRenderer.registerPlugin('interaction', InteractionManager);
 
 	});
 
@@ -34039,10 +34055,10 @@
 	     */
 
 
-	    function Resource(name, url$$1, options) {
+	    function Resource(name, url, options) {
 	        _classCallCheck(this, Resource);
 
-	        if (typeof name !== 'string' || typeof url$$1 !== 'string') {
+	        if (typeof name !== 'string' || typeof url !== 'string') {
 	            throw new Error('Both name and url are required for constructing a resource.');
 	        }
 
@@ -34057,7 +34073,7 @@
 	        this._flags = 0;
 
 	        // set data url flag, needs to be set early for some _determineX checks to work.
-	        this._setFlag(Resource.STATUS_FLAGS.DATA_URL, url$$1.indexOf('data:') === 0);
+	        this._setFlag(Resource.STATUS_FLAGS.DATA_URL, url.indexOf('data:') === 0);
 
 	        /**
 	         * The name of this resource.
@@ -34073,7 +34089,7 @@
 	         * @readonly
 	         * @member {string}
 	         */
-	        this.url = url$$1;
+	        this.url = url;
 
 	        /**
 	         * The extension used to load this resource.
@@ -34687,14 +34703,14 @@
 	     */
 
 
-	    Resource.prototype._createSource = function _createSource(type, url$$1, mime) {
+	    Resource.prototype._createSource = function _createSource(type, url, mime) {
 	        if (!mime) {
-	            mime = type + '/' + this._getExtension(url$$1);
+	            mime = type + '/' + this._getExtension(url);
 	        }
 
 	        var source = document.createElement('source');
 
-	        source.src = url$$1;
+	        source.src = url;
 	        source.type = mime;
 
 	        return source;
@@ -34870,9 +34886,9 @@
 	     */
 
 
-	    Resource.prototype._determineCrossOrigin = function _determineCrossOrigin(url$$1, loc) {
+	    Resource.prototype._determineCrossOrigin = function _determineCrossOrigin(url, loc) {
 	        // data: and javascript: urls are considered same-origin
-	        if (url$$1.indexOf('data:') === 0) {
+	        if (url.indexOf('data:') === 0) {
 	            return '';
 	        }
 
@@ -34893,14 +34909,14 @@
 	        // let the browser determine the full href for the url of this resource and then
 	        // parse with the node url lib, we can't use the properties of the anchor element
 	        // because they don't work in IE9 :(
-	        tempAnchor.href = url$$1;
-	        url$$1 = (0, _parseUri2.default)(tempAnchor.href, { strictMode: true });
+	        tempAnchor.href = url;
+	        url = (0, _parseUri2.default)(tempAnchor.href, { strictMode: true });
 
-	        var samePort = !url$$1.port && loc.port === '' || url$$1.port === loc.port;
-	        var protocol = url$$1.protocol ? url$$1.protocol + ':' : '';
+	        var samePort = !url.port && loc.port === '' || url.port === loc.port;
+	        var protocol = url.protocol ? url.protocol + ':' : '';
 
 	        // if cross origin
-	        if (url$$1.host !== loc.hostname || !samePort || protocol !== loc.protocol) {
+	        if (url.host !== loc.hostname || !samePort || protocol !== loc.protocol) {
 	            return 'anonymous';
 	        }
 
@@ -34942,20 +34958,20 @@
 
 
 	    Resource.prototype._getExtension = function _getExtension() {
-	        var url$$1 = this.url;
+	        var url = this.url;
 	        var ext = '';
 
 	        if (this.isDataUrl) {
-	            var slashIndex = url$$1.indexOf('/');
+	            var slashIndex = url.indexOf('/');
 
-	            ext = url$$1.substring(slashIndex + 1, url$$1.indexOf(';', slashIndex));
+	            ext = url.substring(slashIndex + 1, url.indexOf(';', slashIndex));
 	        } else {
-	            var queryStart = url$$1.indexOf('?');
-	            var hashStart = url$$1.indexOf('#');
-	            var index = Math.min(queryStart > -1 ? queryStart : url$$1.length, hashStart > -1 ? hashStart : url$$1.length);
+	            var queryStart = url.indexOf('?');
+	            var hashStart = url.indexOf('#');
+	            var index = Math.min(queryStart > -1 ? queryStart : url.length, hashStart > -1 ? hashStart : url.length);
 
-	            url$$1 = url$$1.substring(0, index);
-	            ext = url$$1.substring(url$$1.lastIndexOf('.') + 1);
+	            url = url.substring(0, index);
+	            ext = url.substring(url.lastIndexOf('.') + 1);
 	        }
 
 	        return ext.toLowerCase();
@@ -35229,7 +35245,7 @@
 
 
 
-	var async$$1 = _interopRequireWildcard(async);
+	var async$1 = _interopRequireWildcard(async);
 
 
 
@@ -35350,7 +35366,7 @@
 	         * @private
 	         * @member {Resource[]}
 	         */
-	        this._queue = async$$1.queue(this._boundLoadResource, concurrency);
+	        this._queue = async$1.queue(this._boundLoadResource, concurrency);
 
 	        this._queue.pause();
 
@@ -35571,7 +35587,7 @@
 	                    */
 
 
-	    Loader.prototype.add = function add(name, url$$1, options, cb) {
+	    Loader.prototype.add = function add(name, url, options, cb) {
 	        // special case of an array of objects or urls
 	        if (Array.isArray(name)) {
 	            for (var i = 0; i < name.length; ++i) {
@@ -35583,21 +35599,21 @@
 
 	        // if an object is passed instead of params
 	        if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object') {
-	            cb = url$$1 || name.callback || name.onComplete;
+	            cb = url || name.callback || name.onComplete;
 	            options = name;
-	            url$$1 = name.url;
+	            url = name.url;
 	            name = name.name || name.key || name.url;
 	        }
 
 	        // case where no name is passed shift all args over by one.
-	        if (typeof url$$1 !== 'string') {
+	        if (typeof url !== 'string') {
 	            cb = options;
-	            options = url$$1;
-	            url$$1 = name;
+	            options = url;
+	            url = name;
 	        }
 
 	        // now that we shifted make sure we have a proper url.
-	        if (typeof url$$1 !== 'string') {
+	        if (typeof url !== 'string') {
 	            throw new Error('No url passed to add resource to loader.');
 	        }
 
@@ -35618,10 +35634,10 @@
 	        }
 
 	        // add base url if this isn't an absolute url
-	        url$$1 = this._prepareUrl(url$$1);
+	        url = this._prepareUrl(url);
 
 	        // create the store the resource
-	        this.resources[name] = new Resource_1.Resource(name, url$$1, options);
+	        this.resources[name] = new Resource_1.Resource(name, url, options);
 
 	        if (typeof cb === 'function') {
 	            this.resources[name].onAfterMiddleware.once(cb);
@@ -35776,19 +35792,19 @@
 	     * @param {string} url - The url to prepare.
 	     * @return {string} The prepared url.
 	     */
-	    Loader.prototype._prepareUrl = function _prepareUrl(url$$1) {
-	        var parsedUrl = (0, _parseUri2.default)(url$$1, { strictMode: true });
+	    Loader.prototype._prepareUrl = function _prepareUrl(url) {
+	        var parsedUrl = (0, _parseUri2.default)(url, { strictMode: true });
 	        var result = void 0;
 
 	        // absolute url, just use it as is.
-	        if (parsedUrl.protocol || !parsedUrl.path || url$$1.indexOf('//') === 0) {
-	            result = url$$1;
+	        if (parsedUrl.protocol || !parsedUrl.path || url.indexOf('//') === 0) {
+	            result = url;
 	        }
 	        // if baseUrl doesn't end in slash and url doesn't start with slash, then add a slash inbetween
-	        else if (this.baseUrl.length && this.baseUrl.lastIndexOf('/') !== this.baseUrl.length - 1 && url$$1.charAt(0) !== '/') {
-	                result = this.baseUrl + '/' + url$$1;
+	        else if (this.baseUrl.length && this.baseUrl.lastIndexOf('/') !== this.baseUrl.length - 1 && url.charAt(0) !== '/') {
+	                result = this.baseUrl + '/' + url;
 	            } else {
-	                result = this.baseUrl + url$$1;
+	                result = this.baseUrl + url;
 	            }
 
 	        // if we need to add a default querystring, there is a bit more work
@@ -35824,7 +35840,7 @@
 	        resource._dequeue = dequeue;
 
 	        // run before middleware
-	        async$$1.eachSeries(this._beforeMiddleware, function (fn, next) {
+	        async$1.eachSeries(this._beforeMiddleware, function (fn, next) {
 	            fn.call(_this2, resource, function () {
 	                // if the before middleware marks the resource as complete,
 	                // break and don't process any more before middleware
@@ -35884,7 +35900,7 @@
 	        resource._dequeue();
 
 	        // run all the after middleware for this resource
-	        async$$1.eachSeries(this._afterMiddleware, function (fn, next) {
+	        async$1.eachSeries(this._afterMiddleware, function (fn, next) {
 	            fn.call(_this3, resource, next);
 	        }, function () {
 	            resource.onAfterMiddleware.dispatch(resource);
@@ -36065,8 +36081,8 @@
 
 	/* eslint-disable no-undef */
 
-	var Loader$1 = Loader_1.Loader;
-	var Resource$1 = Resource_1.Resource;
+	var Loader = Loader_1.Loader;
+	var Resource = Resource_1.Resource;
 
 
 
@@ -36076,7 +36092,7 @@
 	 * @memberof Loader
 	 * @member {Class<Resource>}
 	 */
-	Loader$1.Resource = Resource$1;
+	Loader.Resource = Resource;
 
 	/**
 	 *
@@ -36084,7 +36100,7 @@
 	 * @memberof Loader
 	 * @member {Class<async>}
 	 */
-	Loader$1.async = async;
+	Loader.async = async;
 
 	/**
 	 *
@@ -36092,7 +36108,7 @@
 	 * @memberof Loader
 	 * @member {Class<encodeBinary>}
 	 */
-	Loader$1.encodeBinary = b64;
+	Loader.encodeBinary = b64;
 
 	/**
 	 *
@@ -36103,14 +36119,14 @@
 	 * @memberof Loader
 	 * @member {Class<encodeBinary>}
 	 */
-	Loader$1.base64 = b64;
+	Loader.base64 = b64;
 
 	// export manually, and also as default
-	var lib = Loader$1;
+	var lib = Loader;
 
 	// default & named export
-	var Loader_1$1 = Loader$1;
-	var default_1$1 = Loader$1;
+	var Loader_1$1 = Loader;
+	var default_1$1 = Loader;
 	lib.Loader = Loader_1$1;
 	lib.default = default_1$1;
 
@@ -36135,7 +36151,7 @@
 	            return;
 	        }
 
-	        var xmlUrl = !resource.isDataUrl ? path$$1.dirname(resource.url) : '';
+	        var xmlUrl = !resource.isDataUrl ? path$1.dirname(resource.url) : '';
 
 	        if (resource.isDataUrl) {
 	            if (xmlUrl === '.') {
@@ -36174,7 +36190,7 @@
 
 	        for (var i = 0; i < pages.length; ++i) {
 	            var pageFile = pages[i].getAttribute('file');
-	            var url$$1 = xmlUrl + pageFile;
+	            var url = xmlUrl + pageFile;
 	            var exists = false;
 
 	            // incase the image is loaded outside
@@ -36182,7 +36198,7 @@
 	            for (var name in this.resources) {
 	                var bitmapResource = this.resources[name];
 
-	                if (bitmapResource.url === url$$1) {
+	                if (bitmapResource.url === url) {
 	                    bitmapResource.metadata.pageFile = pageFile;
 	                    if (bitmapResource.texture) {
 	                        completed(bitmapResource);
@@ -36205,7 +36221,7 @@
 	                    parentResource: resource
 	                };
 
-	                this.add(url$$1, options, completed);
+	                this.add(url, options, completed);
 	            }
 	        }
 	    };
@@ -36213,7 +36229,7 @@
 
 
 
-	var path$$1 = _interopRequireWildcard(path);
+	var path$1 = _interopRequireWildcard(path);
 
 
 
@@ -36730,7 +36746,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -36746,8 +36762,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var tempPoint = new core$$1.Point();
-	var tempPolygon = new core$$1.Polygon();
+	var tempPoint = new core$1.Point();
+	var tempPolygon = new core$1.Polygon();
 
 	/**
 	 * Base mesh class
@@ -36839,7 +36855,7 @@
 	         * @default PIXI.BLEND_MODES.NORMAL
 	         * @see PIXI.BLEND_MODES
 	         */
-	        _this.blendMode = core$$1.BLEND_MODES.NORMAL;
+	        _this.blendMode = core$1.BLEND_MODES.NORMAL;
 
 	        /**
 	         * Triangles in canvas mode are automatically antialiased, use this value to force triangles
@@ -36847,7 +36863,7 @@
 	         *
 	         * @member {number}
 	         */
-	        _this.canvasPadding = core$$1.settings.MESH_CANVAS_PADDING;
+	        _this.canvasPadding = core$1.settings.MESH_CANVAS_PADDING;
 
 	        /**
 	         * The way the Mesh should be drawn, can be any of the {@link PIXI.mesh.Mesh.DRAW_MODES} consts
@@ -36888,7 +36904,7 @@
 	         * @member {PIXI.TextureMatrix}
 	         * @private
 	         */
-	        _this._uvTransform = new core$$1.TextureMatrix(_this._texture);
+	        _this._uvTransform = new core$1.TextureMatrix(_this._texture);
 
 	        /**
 	         * whether or not upload uvTransform to shader
@@ -37124,16 +37140,16 @@
 	    }, {
 	        key: 'tint',
 	        get: function get() {
-	            return core$$1.utils.rgb2hex(this.tintRgb);
+	            return core$1.utils.rgb2hex(this.tintRgb);
 	        },
 	        set: function set(value) // eslint-disable-line require-jsdoc
 	        {
-	            this.tintRgb = core$$1.utils.hex2rgb(value, this.tintRgb);
+	            this.tintRgb = core$1.utils.hex2rgb(value, this.tintRgb);
 	        }
 	    }]);
 
 	    return Mesh;
-	}(core$$1.Container);
+	}(core$1.Container);
 
 	/**
 	 * Different drawing buffer modes supported
@@ -37162,7 +37178,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -37184,7 +37200,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var matrixIdentity = core$$1.Matrix.IDENTITY;
+	var matrixIdentity = core$1.Matrix.IDENTITY;
 
 	/**
 	 * WebGL renderer plugin for tiling sprites
@@ -37221,7 +37237,7 @@
 	    MeshRenderer.prototype.onContextChange = function onContextChange() {
 	        var gl = this.renderer.gl;
 
-	        this.shader = new core$$1.Shader(gl, 'attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n', 'varying vec2 vTextureCoord;\nuniform vec4 uColor;\n\nuniform sampler2D uSampler;\n\nvoid main(void)\n{\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * uColor;\n}\n');
+	        this.shader = new core$1.Shader(gl, 'attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\nuniform mat3 translationMatrix;\nuniform mat3 uTransform;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n    gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n    vTextureCoord = (uTransform * vec3(aTextureCoord, 1.0)).xy;\n}\n', 'varying vec2 vTextureCoord;\nuniform vec4 uColor;\n\nuniform sampler2D uSampler;\n\nvoid main(void)\n{\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * uColor;\n}\n');
 	    };
 
 	    /**
@@ -37284,7 +37300,7 @@
 
 	        glData.shader.uniforms.uSampler = renderer.bindTexture(texture);
 
-	        renderer.state.setBlendMode(core$$1.utils.correctBlendMode(mesh.blendMode, texture.baseTexture.premultipliedAlpha));
+	        renderer.state.setBlendMode(core$1.utils.correctBlendMode(mesh.blendMode, texture.baseTexture.premultipliedAlpha));
 
 	        if (glData.shader.uniforms.uTransform) {
 	            if (mesh.uploadUvTransform) {
@@ -37295,7 +37311,7 @@
 	        }
 	        glData.shader.uniforms.translationMatrix = mesh.worldTransform.toArray(true);
 
-	        glData.shader.uniforms.uColor = core$$1.utils.premultiplyRgba(mesh.tintRgb, mesh.worldAlpha, glData.shader.uniforms.uColor, texture.baseTexture.premultipliedAlpha);
+	        glData.shader.uniforms.uColor = core$1.utils.premultiplyRgba(mesh.tintRgb, mesh.worldAlpha, glData.shader.uniforms.uColor, texture.baseTexture.premultipliedAlpha);
 
 	        var drawMode = mesh.drawMode === _Mesh2.default.DRAW_MODES.TRIANGLE_MESH ? gl.TRIANGLE_STRIP : gl.TRIANGLES;
 
@@ -37303,12 +37319,12 @@
 	    };
 
 	    return MeshRenderer;
-	}(core$$1.ObjectRenderer);
+	}(core$1.ObjectRenderer);
 
 	exports.default = MeshRenderer;
 
 
-	core$$1.WebGLRenderer.registerPlugin('mesh', MeshRenderer);
+	core$1.WebGLRenderer.registerPlugin('mesh', MeshRenderer);
 
 	});
 
@@ -37320,7 +37336,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -37597,7 +37613,7 @@
 	exports.default = MeshSpriteRenderer;
 
 
-	core$$1.CanvasRenderer.registerPlugin('mesh', MeshSpriteRenderer);
+	core$1.CanvasRenderer.registerPlugin('mesh', MeshSpriteRenderer);
 
 	});
 
@@ -38448,7 +38464,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -38579,7 +38595,7 @@
 	         * @default PIXI.BLEND_MODES.NORMAL
 	         * @see PIXI.BLEND_MODES
 	         */
-	        _this.blendMode = core$$1.BLEND_MODES.NORMAL;
+	        _this.blendMode = core$1.BLEND_MODES.NORMAL;
 
 	        /**
 	         * If true, container allocates more batches in case there are more than `maxSize` particles.
@@ -38825,7 +38841,7 @@
 	    }]);
 
 	    return ParticleContainer;
-	}(core$$1.Container);
+	}(core$1.Container);
 
 	exports.default = ParticleContainer;
 
@@ -39137,7 +39153,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -39205,7 +39221,7 @@
 
 	        _this.properties = null;
 
-	        _this.tempMatrix = new core$$1.Matrix();
+	        _this.tempMatrix = new core$1.Matrix();
 
 	        _this.CONTEXT_UID = 0;
 	        return _this;
@@ -39304,7 +39320,7 @@
 	        var baseTexture = children[0]._texture.baseTexture;
 
 	        // if the uvs have not updated then no point rendering just yet!
-	        this.renderer.setBlendMode(core$$1.utils.correctBlendMode(container.blendMode, baseTexture.premultipliedAlpha));
+	        this.renderer.setBlendMode(core$1.utils.correctBlendMode(container.blendMode, baseTexture.premultipliedAlpha));
 
 	        var gl = renderer.gl;
 
@@ -39314,7 +39330,7 @@
 
 	        this.shader.uniforms.projectionMatrix = m.toArray(true);
 
-	        this.shader.uniforms.uColor = core$$1.utils.premultiplyRgba(container.tintRgb, container.worldAlpha, this.shader.uniforms.uColor, baseTexture.premultipliedAlpha);
+	        this.shader.uniforms.uColor = core$1.utils.premultiplyRgba(container.tintRgb, container.worldAlpha, this.shader.uniforms.uColor, baseTexture.premultipliedAlpha);
 
 	        // make sure the texture is bound..
 	        this.shader.uniforms.uSampler = renderer.bindTexture(baseTexture);
@@ -39604,12 +39620,12 @@
 	    };
 
 	    return ParticleRenderer;
-	}(core$$1.ObjectRenderer);
+	}(core$1.ObjectRenderer);
 
 	exports.default = ParticleRenderer;
 
 
-	core$$1.WebGLRenderer.registerPlugin('particle', ParticleRenderer);
+	core$1.WebGLRenderer.registerPlugin('particle', ParticleRenderer);
 
 	});
 
@@ -39710,7 +39726,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -39722,7 +39738,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var SharedTicker = core$$1.ticker.shared;
+	var SharedTicker = core$1.ticker.shared;
 
 	/**
 	 * Default number of uploads per frame using prepare plugin.
@@ -39733,7 +39749,7 @@
 	 * @type {number}
 	 * @default 4
 	 */
-	core$$1.settings.UPLOADS_PER_FRAME = 4;
+	core$1.settings.UPLOADS_PER_FRAME = 4;
 
 	/**
 	 * The prepare manager provides functionality to upload content to the GPU. BasePrepare handles
@@ -39770,7 +39786,7 @@
 	         * The limiter to be used to control how quickly items are prepared.
 	         * @type {PIXI.prepare.CountLimiter|PIXI.prepare.TimeLimiter}
 	         */
-	        this.limiter = new _CountLimiter2.default(core$$1.settings.UPLOADS_PER_FRAME);
+	        this.limiter = new _CountLimiter2.default(core$1.settings.UPLOADS_PER_FRAME);
 
 	        /**
 	         * Reference to the renderer.
@@ -39877,7 +39893,7 @@
 
 	            if (!this.ticking) {
 	                this.ticking = true;
-	                SharedTicker.addOnce(this.tick, this, core$$1.UPDATE_PRIORITY.UTILITY);
+	                SharedTicker.addOnce(this.tick, this, core$1.UPDATE_PRIORITY.UTILITY);
 	            }
 	        } else if (done) {
 	            done();
@@ -39938,7 +39954,7 @@
 	            }
 	        } else {
 	            // if we are not finished, on the next rAF do this again
-	            SharedTicker.addOnce(this.tick, this, core$$1.UPDATE_PRIORITY.UTILITY);
+	            SharedTicker.addOnce(this.tick, this, core$1.UPDATE_PRIORITY.UTILITY);
 	        }
 	    };
 
@@ -39995,7 +40011,7 @@
 	        }
 
 	        // Get childen recursively
-	        if (item instanceof core$$1.Container) {
+	        if (item instanceof core$1.Container) {
 	            for (var _i2 = item.children.length - 1; _i2 >= 0; _i2--) {
 	                this.add(item.children[_i2]);
 	            }
@@ -40044,7 +40060,7 @@
 	    // Objects with mutliple textures
 	    if (item && item._textures && item._textures.length) {
 	        for (var i = 0; i < item._textures.length; i++) {
-	            if (item._textures[i] instanceof core$$1.Texture) {
+	            if (item._textures[i] instanceof core$1.Texture) {
 	                var baseTexture = item._textures[i].baseTexture;
 
 	                if (queue.indexOf(baseTexture) === -1) {
@@ -40068,7 +40084,7 @@
 	 */
 	function findBaseTexture(item, queue) {
 	    // Objects with textures, like Sprites/Text
-	    if (item instanceof core$$1.BaseTexture) {
+	    if (item instanceof core$1.BaseTexture) {
 	        if (queue.indexOf(item) === -1) {
 	            queue.push(item);
 	        }
@@ -40088,7 +40104,7 @@
 	 * @return {boolean} if a PIXI.Texture object was found.
 	 */
 	function findTexture(item, queue) {
-	    if (item._texture && item._texture instanceof core$$1.Texture) {
+	    if (item._texture && item._texture instanceof core$1.Texture) {
 	        var texture = item._texture.baseTexture;
 
 	        if (queue.indexOf(texture) === -1) {
@@ -40110,7 +40126,7 @@
 	 * @return {boolean} If item was uploaded.
 	 */
 	function drawText(helper, item) {
-	    if (item instanceof core$$1.Text) {
+	    if (item instanceof core$1.Text) {
 	        // updating text will return early if it is not dirty
 	        item.updateText(true);
 
@@ -40129,10 +40145,10 @@
 	 * @return {boolean} If item was uploaded.
 	 */
 	function calculateTextStyle(helper, item) {
-	    if (item instanceof core$$1.TextStyle) {
+	    if (item instanceof core$1.TextStyle) {
 	        var font = item.toFontString();
 
-	        core$$1.TextMetrics.measureFont(font);
+	        core$1.TextMetrics.measureFont(font);
 
 	        return true;
 	    }
@@ -40149,7 +40165,7 @@
 	 * @return {boolean} if a PIXI.Text object was found.
 	 */
 	function findText(item, queue) {
-	    if (item instanceof core$$1.Text) {
+	    if (item instanceof core$1.Text) {
 	        // push the text style to prepare it - this can be really expensive
 	        if (queue.indexOf(item.style) === -1) {
 	            queue.push(item.style);
@@ -40180,7 +40196,7 @@
 	 * @return {boolean} if a PIXI.TextStyle object was found.
 	 */
 	function findTextStyle(item, queue) {
-	    if (item instanceof core$$1.TextStyle) {
+	    if (item instanceof core$1.TextStyle) {
 	        if (queue.indexOf(item) === -1) {
 	            queue.push(item);
 	        }
@@ -40201,7 +40217,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -40260,7 +40276,7 @@
 
 	exports.default = WebGLPrepare;
 	function uploadBaseTextures(renderer, item) {
-	    if (item instanceof core$$1.BaseTexture) {
+	    if (item instanceof core$1.BaseTexture) {
 	        // if the texture already has a GL texture, then the texture has been prepared or rendered
 	        // before now. If the texture changed, then the changer should be calling texture.update() which
 	        // reuploads the texture without need for preparing it again
@@ -40283,7 +40299,7 @@
 	 * @return {boolean} If item was uploaded.
 	 */
 	function uploadGraphics(renderer, item) {
-	    if (item instanceof core$$1.Graphics) {
+	    if (item instanceof core$1.Graphics) {
 	        // if the item is not dirty and already has webgl data, then it got prepared or rendered
 	        // before now and we shouldn't waste time updating it again
 	        if (item.dirty || item.clearDirty || !item._webGL[renderer.plugins.graphics.CONTEXT_UID]) {
@@ -40305,7 +40321,7 @@
 	 * @return {boolean} if a PIXI.Graphics object was found.
 	 */
 	function findGraphics(item, queue) {
-	    if (item instanceof core$$1.Graphics) {
+	    if (item instanceof core$1.Graphics) {
 	        queue.push(item);
 
 	        return true;
@@ -40314,7 +40330,7 @@
 	    return false;
 	}
 
-	core$$1.WebGLRenderer.registerPlugin('prepare', WebGLPrepare);
+	core$1.WebGLRenderer.registerPlugin('prepare', WebGLPrepare);
 
 	});
 
@@ -40326,7 +40342,7 @@
 
 
 
-	var core$$1 = _interopRequireWildcard(core);
+	var core$1 = _interopRequireWildcard(core);
 
 
 
@@ -40418,7 +40434,7 @@
 
 	exports.default = CanvasPrepare;
 	function uploadBaseTextures(prepare, item) {
-	    if (item instanceof core$$1.BaseTexture) {
+	    if (item instanceof core$1.BaseTexture) {
 	        var image = item.source;
 
 	        // Sometimes images (like atlas images) report a size of zero, causing errors on windows phone.
@@ -40437,7 +40453,7 @@
 	    return false;
 	}
 
-	core$$1.CanvasRenderer.registerPlugin('prepare', CanvasPrepare);
+	core$1.CanvasRenderer.registerPlugin('prepare', CanvasPrepare);
 
 	});
 
@@ -40594,39 +40610,39 @@
 
 
 
-	var accessibility$$1 = _interopRequireWildcard(accessibility);
+	var accessibility$1 = _interopRequireWildcard(accessibility);
 
 
 
-	var extract$$1 = _interopRequireWildcard(extract);
+	var extract$1 = _interopRequireWildcard(extract);
 
 
 
-	var extras$$1 = _interopRequireWildcard(extras);
+	var extras$1 = _interopRequireWildcard(extras);
 
 
 
-	var filters$$1 = _interopRequireWildcard(filters);
+	var filters$1 = _interopRequireWildcard(filters);
 
 
 
-	var interaction$$1 = _interopRequireWildcard(interaction);
+	var interaction$1 = _interopRequireWildcard(interaction);
 
 
 
-	var loaders$$1 = _interopRequireWildcard(loaders);
+	var loaders$1 = _interopRequireWildcard(loaders);
 
 
 
-	var mesh$$1 = _interopRequireWildcard(mesh);
+	var mesh$1 = _interopRequireWildcard(mesh);
 
 
 
-	var particles$$1 = _interopRequireWildcard(particles);
+	var particles$1 = _interopRequireWildcard(particles);
 
 
 
-	var prepare$$1 = _interopRequireWildcard(prepare);
+	var prepare$1 = _interopRequireWildcard(prepare);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -40648,17 +40664,17 @@
 
 	// export libs
 	// import polyfills. Done as an export to make sure polyfills are imported first
-	var loader = loaders$$1.shared || null;
+	var loader = loaders$1.shared || null;
 
-	exports.accessibility = accessibility$$1;
-	exports.extract = extract$$1;
-	exports.extras = extras$$1;
-	exports.filters = filters$$1;
-	exports.interaction = interaction$$1;
-	exports.loaders = loaders$$1;
-	exports.mesh = mesh$$1;
-	exports.particles = particles$$1;
-	exports.prepare = prepare$$1;
+	exports.accessibility = accessibility$1;
+	exports.extract = extract$1;
+	exports.extras = extras$1;
+	exports.filters = filters$1;
+	exports.interaction = interaction$1;
+	exports.loaders = loaders$1;
+	exports.mesh = mesh$1;
+	exports.particles = particles$1;
+	exports.prepare = prepare$1;
 	exports.loader = loader;
 
 	// Apply the deprecations
@@ -40773,9 +40789,9 @@
 	};
 	var src_1 = src$1.Drawer;
 
-	exports.default = src$1;
 	exports.Drawer = src_1;
+	exports.default = src$1;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
