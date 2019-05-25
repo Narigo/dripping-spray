@@ -154,3 +154,4 @@ The main commands you should know / use:
 2. `lerna bootstrap` - installs all `node_modules` and links the packages
 3. `lerna run build` - builds all packages
 4. `lerna test` - tests all packages
+5. `lerna exec "npm outdated"` - runs `npm outdated` in all packages to find outdated packages for possible updates
