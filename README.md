@@ -145,3 +145,12 @@ function render() {
 
 requestAnimationFrame(render);
 ```
+
+## Contributing / building
+
+The main commands you should know / use:
+
+1. `lerna clean` - removes all `node_modules` and unlinks whatever is linked
+2. `lerna bootstrap` - installs all `node_modules` and links the packages
+3. `lerna run build` - builds all packages
+4. `lerna test` - tests all packages
