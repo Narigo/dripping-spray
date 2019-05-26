@@ -14,15 +14,18 @@ function PixiDrawer(canvas) {
   var maxHeight = resolution[1];
   canvas.width = maxWidth;
   canvas.height = maxHeight;
+console.log("test");
+var renderer = PIXI.autoDetectRenderer(maxWidth, maxHeight, {
+  view: canvas,
+  antialias: true
+});
+console.log("test2");
 
-  var renderer = PIXI.autoDetectRenderer(maxWidth, maxHeight, {
-    view: canvas,
-    antialias: true
-  });
+var stage = new PIXI.Container();
+console.log("test3");
 
-  var stage = new PIXI.Container();
-
-  var circles = new PIXI.Graphics();
+var circles = new PIXI.Graphics();
+console.log("test4");
   var lines = new PIXI.Graphics();
   stage.addChild(circles);
   stage.addChild(lines);

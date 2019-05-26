@@ -13,6 +13,6 @@ module.exports = {
       jsnext: true,
       main: true
     }),
-    commonjs({})
+    commonjs({ namedExports: { "resource-loader": ["Resource"] } })
   ]
 };
