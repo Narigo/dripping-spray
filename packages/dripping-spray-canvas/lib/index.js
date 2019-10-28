@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = global || self, factory(global['dripping-spray-canvas'] = {}));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
   function CanvasDrawer(canvas) {
     var ctx = canvas.getContext("2d");
@@ -86,8 +86,8 @@
 
   var lib = createCommonjsModule(function (module, exports) {
   (function (global, factory) {
-    factory(exports);
-  }(commonjsGlobal, function (exports) {
+     factory(exports) ;
+  }(commonjsGlobal, (function (exports) {
     function Circles(red, green, blue) {
       var that = this;
       this.shape = "circle";
@@ -345,13 +345,13 @@
     var src_1 = src.shapes;
     var src_2 = src.Spray;
 
-    exports.Spray = src_2;
     exports.default = src;
     exports.shapes = src_1;
+    exports.Spray = src_2;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-  }));
+  })));
   });
 
   unwrapExports(lib);
@@ -483,4 +483,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
