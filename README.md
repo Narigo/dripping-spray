@@ -148,10 +148,11 @@ requestAnimationFrame(render);
 
 ## Contributing / building
 
-The main commands you should know / use:
+The main commands to use:
 
-1. `lerna clean` - removes all `node_modules` and unlinks whatever is linked
-2. `lerna bootstrap` - installs all `node_modules` and links the packages
-3. `lerna run build` - builds all packages
-4. `lerna test` - tests all packages
-5. `lerna exec "npm outdated"` - runs `npm outdated` in all packages to find outdated packages for possible updates
+1. `npx lerna clean` - removes all `node_modules` and unlinks whatever is linked
+2. `npx lerna bootstrap` - installs all `node_modules` and links the packages
+3. `npx lerna run build` - builds all packages
+4. `npx lerna run test` - tests all packages
+5. `npx lerna exec "npm outdated"` - runs `npm outdated` in all packages to find outdated packages for possible updates
+6. `npx lerna exec "npx updtr"` - updates all packages
