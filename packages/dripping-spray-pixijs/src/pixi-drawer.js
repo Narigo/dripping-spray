@@ -1,4 +1,4 @@
-var PIXI = require("pixi.js");
+var PIXI = require("pixi.js-legacy");
 
 function PixiDrawer(canvas) {
   var resolution = (function() {

@@ -6,13 +6,7 @@ module.exports = {
   output: {
     file: "lib/index.js",
     name: "dripping-spray-canvas",
-    format: "umd"
+    format: "umd",
   },
-  plugins: [
-    nodeResolve({
-      jsnext: true,
-      main: true
-    }),
-    commonjs({})
-  ]
+  plugins: [nodeResolve(), commonjs()],
 };

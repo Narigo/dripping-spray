@@ -345,9 +345,9 @@
     var src_1 = src.shapes;
     var src_2 = src.Spray;
 
+    exports.Spray = src_2;
     exports.default = src;
     exports.shapes = src_1;
-    exports.Spray = src_2;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -6,13 +6,7 @@ module.exports = {
   output: {
     file: "../../docs/bundle.js",
     name: "dripping-spray-demo",
-    format: "umd"
+    format: "umd",
   },
-  plugins: [
-    nodeResolve({
-      jsnext: true,
-      main: true
-    }),
-    commonjs({})
-  ]
+  plugins: [nodeResolve(), commonjs()],
 };

@@ -1,7 +1,9 @@
 // Karma configuration
 // Generated on Fri Mar 06 2015 01:57:42 GMT+0100 (CET)
 
-module.exports = function(config) {
+const isDocker = require("is-docker")();
+
+module.exports = function (config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "",
@@ -19,7 +21,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "./src/**.spec.js": ["rollup"]
+      "./src/**.spec.js": ["rollup"],
     },
 
     // test results reporter to use
@@ -42,12 +44,21 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ["Chrome"],
+    browsers: ["ChromeCustom"],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
-    rollupPreprocessor: require("./rollup.config")
+    rollupPreprocessor: require("./rollup.config"),
+
+    customLaunchers: {
+      ChromeCustom: {
+        base: "ChromeHeadless",
+        // We must disable the Chrome sandbox when running Chrome inside Docker (Chrome's sandbox needs
+        // more permissions than Docker allows by default)
+        flags: [...(isDocker ? ["--no-sandbox"] : []), "--use-gl"],
+      },
+    },
   });
 };
